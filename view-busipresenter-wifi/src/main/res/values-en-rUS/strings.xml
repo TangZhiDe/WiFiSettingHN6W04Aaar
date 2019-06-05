@@ -1,0 +1,60 @@
+<resources>
+    <string name="setting_app_name">asdsad</string>
+    <string name="wifi">WiFi</string>
+    <string name="wifi_hotspot">WiFi热点</string>
+    <string name="network_4g">4G网络</string>
+    <string name="mobile_network">移动网络</string>
+
+    <!--add by xioayu 2018 12 17-->
+    <string name="hello">Hello World, WIFICrackerActivity!</string>
+    <string name="app_name">WIFICracker</string>
+
+    <string name="wifi_security_short_wep">WEP</string>
+    <string name="wifi_security_short_wpa">WPA</string>
+    <string name="wifi_security_short_wpa2">WPA2</string>
+    <string name="wifi_security_short_wpa_wpa2">WPA/WPA2</string>
+    <string name="wifi_security_short_psk_generic">@string/wifi_security_short_wpa_wpa2</string>
+    <string name="wifi_security_short_eap">802.1x</string>
+    <string name="wifi_security_none">None</string>
+
+    <string name="wifi_security_wep">WEP</string>
+    <string name="wifi_security_wpa">WPA PSK</string>
+    <string name="wifi_security_wpa2">WPA2 PSK</string>
+    <string name="wifi_security_wpa_wpa2">WPA/WPA2 PSK</string>
+    <string name="wifi_security_psk_generic">@string/wifi_security_wpa_wpa2</string>
+    <string name="wifi_security_eap">802.1x EAP</string>
+
+    <string name="wifi_accesspoint" msgid="6234851776910938957">"WIFI热点"</string>
+    <string name="wifi_access_points" msgid="6623468070878623378">"Wi-Fi 网络"</string>
+    <string name="wifi_settings_category" msgid="5989698986158534800">"WIFI Cracker"</string>
+
+
+    <string name="string1">Internet</string>
+    <string name="string2">WiFi</string>
+    <string name="string3">                 Please enter password</string>
+    <string name="string4">Connect</string>
+    <string name="string5">Cancel</string>
+    <string name="string6">Connecting...</string>
+    <string name="string7">Connected</string>
+    <string name="string8">Connecting fail</string>
+    <string name="string9">Confirm disconnected</string>
+    <string name="string10">You can still reconnect after disconnecting.</string>
+    <string name="string11">Disconnect</string>
+    <string name="string12">Hotspot</string>
+    <string name="string13">encryption</string>
+    <string name="string14">Free secret</string>
+    <string name="string15">Hotspot name</string>
+    <string name="string16">Reset</string>
+    <string name="string17">Hotspot password</string>
+    <string name="string18">Insure</string>
+    <string name="string19">The saved</string>
+    <string name="string20">Hotspot password: password-less</string>
+    <string name="string21">Insufficient password length</string>
+    <string name="string22">The minimum password length is 8 digits</string>
+    <string name="string23">Associated AP complete</string>
+    <string name="string24">Associating AP...</string>
+    <string name="string25">Confirm deleting the hotspot?</string>
+    <string name="string26">Hotspot</string>
+    <string name="string27">Password mistake</string>
+    <string name="string28">Refresh</string>
+</resources>

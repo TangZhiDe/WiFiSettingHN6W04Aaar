@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="unselect_color">#6f7b8c</color>
+    <color name="normal_color">#222222</color>
+    <color name="black_color">#000</color>
+    <color name="blue_color">#0060ff</color>
+    <color name="dialog_color">#5a5d62</color>
+    <color name="red_color">#f00</color>
+    <color name="again_color">#656b77</color>
+    <color name="edit_color">#f6f8fa</color>
+    <color name="switch_select_color">#0060ff</color>
+    <color name="switch_unselect_color">#868686</color>
+    <color name="hint_color">#868686</color>
+
+
+</resources>

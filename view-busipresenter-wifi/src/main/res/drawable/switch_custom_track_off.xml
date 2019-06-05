@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" android:layout_height="54px" android:layout_width="306px">
+    <!--<solid android:color="#434343" />-->
+    <!--<stroke-->
+        <!--android:width="5dp"-->
+        <!--android:color="#00000000" />-->
+
+    <!--在此处设置宽度是无效的  设置高度100px-->
+    <size android:height="54px"></size>
+    <!--设置圆角的弧度-->
+    <corners android:radius="45px" />
+
+    <!-- 变化率  定义从左到右的颜色不变 -->
+    <gradient
+        android:endColor="#f4f4f7"
+        android:startColor="#f4f4f7" />
+
+</shape>
+<!--关闭状态-->
+
+

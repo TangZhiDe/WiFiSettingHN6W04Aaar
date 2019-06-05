@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="640px"
+    android:id="@+id/alert_wifi_dialog"
+    android:layout_height="340px">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/alert_wifi_model1"
+        android:visibility="visible"
+        android:layout_height="237px">
+
+        <RelativeLayout
+            android:layout_width="450px"
+            android:layout_centerInParent="true"
+            android:layout_height="79px">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_height="wrap_content">
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:textSize="28px"-->
+                    <!--android:textColor="@color/black_color"-->
+                    <!--android:text="@string/string9"-->
+                    <!--android:layout_height="wrap_content" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="28px"
+                    android:id="@+id/alert_wifi_name1"
+                    android:textColor="@color/black_color"
+                    android:text=""
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:singleLine="true"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/alert_wifi_tip1"
+                android:textColor="@color/unselect_color"
+                android:textSize="20px"
+                android:text="@string/string10"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/alert_wifi_model2"
+        android:gravity="center_horizontal"
+        android:layout_height="237px">
+
+        <TextView
+            android:layout_width="400px"
+            android:singleLine="true"
+            android:textSize="26px"
+            android:id="@+id/alert_wifi_name"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="35px"
+            android:text="aaaa"
+            android:textColor="@color/dialog_color"
+            android:layout_height="wrap_content" />
+<!--
+            android:background="@color/edit_color"-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20px"
+            android:id="@+id/alert_wifi_edit"
+            android:orientation="horizontal"
+            android:layout_height="80px">
+
+            <EditText
+                android:id="@+id/alert_wifi_psw"
+                android:layout_width="420px"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_wifi_dialog"
+                android:gravity="center"
+                android:inputType="textPassword"
+                android:maxLength="20"
+                android:textColorHint="@color/hint_color"
+                android:singleLine="true"
+                android:textColor="@color/black_color"
+                android:textCursorDrawable="@null"
+                android:textSize="20px" />
+            <ImageView
+                android:layout_width="80px"
+                android:scaleType="center"
+                android:id="@+id/alert_wifi_display"
+                android:src="@drawable/ic_hide"
+                android:layout_height="80px" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="@string/string27"
+            android:id="@+id/alert_wifi_tip"
+            android:layout_marginTop="10px"
+            android:visibility="gone"
+            android:textColor="@color/red_color"
+            android:textSize="26px"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="28px"
+            android:background="@null"
+            android:id="@+id/alert_wifi_disconnect"
+            android:textColor="@color/dialog_color"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+        <!--<View-->
+            <!--android:layout_width="1dp"-->
+            <!--android:layout_marginBottom="10px"-->
+            <!--android:background="#ccc"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginTop="10px"/>-->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/alert_wifi_cancel"
+            android:textSize="28px"
+            android:textColor="@color/dialog_color"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</LinearLayout>

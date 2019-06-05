@@ -1,0 +1,84 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+       // applicationId "com.adayo.app.setting"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        jackOptions{
+//            enabled true
+//        }
+    }
+
+//    compileOptions{
+//        sourceCompatibility JavaVersion.VERSION_1_7
+//        targetCompatibility JavaVersion.VERSION_1_7
+//    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+
+}
+
+
+allprojects{
+    repositories{
+//          jcenter()
+//        maven { url "https://maven.google.com" }
+//        maven { url "https://dl.google.com/dl/android/maven2/"}
+        mavenCentral()
+
+    }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            //设置jar相对包路径或绝对路径
+            options.compilerArgs << '-Xbootclasspath/p:view-busipresenter-wifi/libs/wifimanagerlib.jar'
+//            options.compilerArgs.add('-Xbootclasspath/p:view-busipresenter-wifi/libs/wifimanagerlib.jar')
+//            options.compilerArgs.add('-Xbootclasspath/p:view-busipresenter-wifi\\libs\\wifimanagerlib.jar')
+            // options.compilerArgs.add('-Xbootclasspath/p:ap-busipresenter/libs/WifiAp8.jar')
+        }
+    }
+
+}
+
+dependencies {
+    // compile fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly files('libs/wifimanagerlib.jar')
+    compile 'com.android.support:appcompat-v7:28.0.0'
+    compile 'com.android.support:recyclerview-v7:28.0.0'
+    compile project(':funcpresenter-model-wifi')
+    compile project(':CommonUI-wifi')
+    provided files('libs/wifiservice-proxy.jar')
+    provided files('libs/appbase.jar')
+    provided files('libs/audiodsp-proxy.jar')
+    compileOnly files('libs/systemservice-proxy.jar')
+}
+
+preBuild {
+    doLast {
+        def imlFile = file(project.name + ".iml")
+        println 'Change ' + project.name + '.iml order'
+        try {
+            def parsedXml = (new XmlParser()).parse(imlFile)
+            def jdkNode = parsedXml.component[1].orderEntry.find { it.'@type' == 'jdk' }
+            parsedXml.component[1].remove(jdkNode)
+            def sdkString = "Android API " + android.compileSdkVersion.substring("android-".length()) + " Platform"
+            new Node(parsedXml.component[1], 'orderEntry', ['type': 'jdk', 'jdkName': sdkString, 'jdkType': 'Android SDK'])
+            groovy.xml.XmlUtil.serialize(parsedXml, new FileOutputStream(imlFile))
+        } catch (FileNotFoundException e) {
+            // nop, iml not found
+        }
+    }
+}
+

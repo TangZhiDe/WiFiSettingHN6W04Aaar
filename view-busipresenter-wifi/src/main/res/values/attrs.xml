@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="SwitchButton" tools:ignore="ResourceName">
+        <attr name="kswThumbDrawable" format="reference"/>
+        <attr name="kswThumbColor" format="color|reference"/>
+        <attr name="kswThumbMargin" format="dimension|reference"/>
+        <attr name="kswThumbMarginTop" format="dimension|reference"/>
+        <attr name="kswThumbMarginBottom" format="dimension|reference"/>
+        <attr name="kswThumbMarginLeft" format="dimension|reference"/>
+        <attr name="kswThumbMarginRight" format="dimension|reference"/>
+        <attr name="kswThumbWidth" format="dimension|reference"/>
+        <attr name="kswThumbHeight" format="dimension|reference"/>
+        <attr name="kswThumbRadius" format="dimension|reference"/>
+        <attr name="kswBackRadius" format="dimension|reference"/>
+        <attr name="kswBackDrawable" format="reference"/>
+        <attr name="kswBackColor" format="color|reference"/>
+        <attr name="kswFadeBack" format="boolean"/>
+        <attr name="kswThumbRangeRatio" format="float"/>
+        <attr name="kswAnimationDuration" format="integer"/>
+        <attr name="kswTintColor" format="color|reference"/>
+        <attr name="kswTextOn" format="string"/>
+        <attr name="kswTextOff" format="string"/>
+        <attr name="kswTextThumbInset" format="dimension"/>
+        <attr name="kswTextExtra" format="dimension"/>
+        <attr name="kswTextAdjust" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="SwitchButton1">
+        <attr name="textOn" format="string"/>
+        <attr name="textOff" format="string"/>
+        <attr name="textSize_ab" format="dimension"/>
+        <attr name="bg_bitmap" format="reference"/>
+        <attr name="btn_bitmap" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="ItemMenuView">
+
+        <attr name="isInvalid" format="boolean" />
+        <attr name="showRightText" format="boolean"/>
+        <attr name="showOnlyRightText" format="boolean"/>
+        <attr name="showSeekBar" format="boolean"/>
+        <attr name="showSwitchButton" format="boolean"/>
+        <attr name="switchButtonState" format="boolean"/>
+
+        <attr name="seekBarMax1" format="integer"/>
+
+        <attr name="switchButtonWidth" format="dimension"/>
+
+        <attr name="textColor" format="color|reference" />
+        <attr name="textInvalidColor" format="color|reference" />
+        <attr name="text" format="string"/>
+        <attr name="textSize" format="dimension|reference" />
+        <attr name="rightText" format="string"/>
+        <attr name="rightTextColor" format="color|reference" />
+        <attr name="rightTextInvalidColor" format="color|reference" />
+        <attr name="rightTextSize" format="dimension|reference" />
+        <attr name="rightNormalIcon" format="reference"/>
+        <attr name="rightInvalidIcon" format="reference"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="SeekBarView">
+        <attr name="seekBarMax" format="integer" />
+        <attr name="seekBarBgWidth" format="integer" />
+        <attr name="seekBarBgHeight" format="integer" />
+        <attr name="seekBarMarginLeft" format="integer" />
+
+        <attr name="thumbTextColor" format="color|reference" />
+        <attr name="thumbTextSize" format="dimension|reference" />
+
+        <attr name="leftIcon" format="reference"/>
+        <attr name="rightIcon" format="reference"/>
+
+        <attr name="showProgress" format="boolean"/>
+    </declare-styleable>
+
+
+    <!--add bu xiaoyu 2018 12 17-->
+
+        <!--<declare-styleable name="WifiEncryptionState">-->
+            <!--<attr name="state_encrypted" format="boolean" />-->
+        <!--</declare-styleable>-->
+        <!--<declare-styleable name="IconPreferenceScreen">-->
+            <!--<attr name="icon" format="reference" />-->
+        <!--</declare-styleable>-->
+
+        <!--<declare-styleable name="BatteryHistoryChart">-->
+            <!--&lt;!&ndash; Base text color, typeface, size, and style. &ndash;&gt;-->
+            <!--<attr name="android:textAppearance" />-->
+            <!--&lt;!&ndash; Text color. &ndash;&gt;-->
+            <!--<attr name="android:textColor" />-->
+            <!--&lt;!&ndash; Size of the text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp). &ndash;&gt;-->
+            <!--<attr name="android:textSize" />-->
+            <!--&lt;!&ndash; Typeface (normal, sans, serif, monospace) for the text. &ndash;&gt;-->
+            <!--<attr name="android:typeface" />-->
+            <!--&lt;!&ndash; Style (bold, italic, bolditalic) for the text. &ndash;&gt;-->
+            <!--<attr name="android:textStyle" />-->
+            <!--&lt;!&ndash; Place a shadow of the specified color behind the text. &ndash;&gt;-->
+            <!--<attr name="android:shadowColor" />-->
+            <!--&lt;!&ndash; Horizontal offset of the shadow. &ndash;&gt;-->
+            <!--<attr name="android:shadowDx" />-->
+            <!--&lt;!&ndash; Vertical offset of the shadow. &ndash;&gt;-->
+            <!--<attr name="android:shadowDy" />-->
+            <!--&lt;!&ndash; Radius of the shadow. &ndash;&gt;-->
+            <!--<attr name="android:shadowRadius" />-->
+        <!--</declare-styleable>-->
+
+        <!--<declare-styleable name="PercentageBarChart">-->
+            <!--&lt;!&ndash; Background color &ndash;&gt;-->
+            <!--<attr name="emptyColor" format="color" />-->
+            <!--&lt;!&ndash; Minimum tick width for each slice in the bar chart. &ndash;&gt;-->
+            <!--<attr name="minTickWidth" format="dimension" />-->
+        <!--</declare-styleable>-->
+
+        <!--<declare-styleable name="ChartView">-->
+            <!--&lt;!&ndash; optimal width of the chart &ndash;&gt;-->
+            <!--<attr name="optimalWidth" format="dimension" />-->
+            <!--&lt;!&ndash; how to weight extra space beyond optimal width &ndash;&gt;-->
+            <!--<attr name="optimalWidthWeight" format="float" />-->
+        <!--</declare-styleable>-->
+
+        <!--<declare-styleable name="ChartSweepView">-->
+            <!--<attr name="sweepDrawable" format="reference" />-->
+            <!--<attr name="followAxis">-->
+                <!--<enum name="horizontal" value="0" />-->
+                <!--<enum name="vertical" value="1" />-->
+            <!--</attr>-->
+            <!--<attr name="neighborMargin" format="dimension" />-->
+            <!--<attr name="labelSize" format="dimension" />-->
+            <!--<attr name="labelTemplate" format="reference" />-->
+            <!--<attr name="labelColor" format="color" />-->
+        <!--</declare-styleable>-->
+
+        <!--<declare-styleable name="ChartGridView">-->
+            <!--<attr name="primaryDrawable" format="reference" />-->
+            <!--<attr name="secondaryDrawable" format="reference" />-->
+            <!--<attr name="borderDrawable" format="reference" />-->
+            <!--<attr name="labelColor" />-->
+        <!--</declare-styleable>-->
+
+        <!--<declare-styleable name="ChartNetworkSeriesView">-->
+            <!--<attr name="strokeColor" format="color" />-->
+            <!--<attr name="fillColor" format="color" />-->
+            <!--<attr name="fillColorSecondary" format="color" />-->
+        <!--</declare-styleable>-->
+
+
+        <!--&lt;!&ndash;<add-resource type="attr" name="ExpandableLinearLayout"></add-resource>&ndash;&gt;-->
+        <!--<declare-styleable name="ExpandableLinearLayout">-->
+            <!--&lt;!&ndash;默认显示的条目数&ndash;&gt;-->
+            <!--<attr name="defaultItemCount" format="integer" />-->
+            <!--&lt;!&ndash;提示文字的大小&ndash;&gt;-->
+            <!--<attr name="tipTextSize" format="dimension" />-->
+            <!--&lt;!&ndash;字体颜色&ndash;&gt;-->
+            <!--<attr name="tipTextColor" format="color"/>-->
+            <!--&lt;!&ndash;待展开的文字提示&ndash;&gt;-->
+            <!--<attr name="expandText" format="string" />-->
+            <!--&lt;!&ndash;待收起时的文字提示&ndash;&gt;-->
+            <!--<attr name="hideText" format="string" />-->
+            <!--&lt;!&ndash;向下的箭头的图标&ndash;&gt;-->
+            <!--<attr name="arrowDownImg" format="reference" />-->
+            <!--&lt;!&ndash;是否使用默认的底部&ndash;&gt;-->
+            <!--<attr name="useDefaultBottom" format="boolean" />-->
+        <!--</declare-styleable>-->
+
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CommonUI-wifi/CommonUI-wifi.iml" filepath="$PROJECT_DIR$/CommonUI-wifi/CommonUI-wifi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WiFiSettingHN6W04Aaar.iml" filepath="$PROJECT_DIR$/WiFiSettingHN6W04Aaar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/funcpresenter-model-wifi/funcpresenter-model-wifi.iml" filepath="$PROJECT_DIR$/funcpresenter-model-wifi/funcpresenter-model-wifi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/view-busipresenter-wifi/view-busipresenter-wifi.iml" filepath="$PROJECT_DIR$/view-busipresenter-wifi/view-busipresenter-wifi.iml" />
+    </modules>
+  </component>
+</project>

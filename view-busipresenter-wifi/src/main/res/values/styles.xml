@@ -1,0 +1,113 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="CommonTheme">
+
+    </style>
+
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>  //Dialog的windowFrame框为无
+        <item name="android:windowIsFloating"> true</item>  //是否浮现在activity之上
+        <item name="android:windowIsTranslucent">true</item> //是否半透明
+        <item name="android:windowNoTitle"> true</item>  //是否显示title
+        <item name="android:background">@android:color/transparent</item>  //设置dialog的背景
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimAmount">0.7</item>  //就是用来控制灰度的值，当为1时，界面除了我们的dialog内容是高亮显示的，dialog以外的区域是黑色的，完全看不到其他内容
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+
+    <style name="ItemMenuViewLineStyte">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@color/black</item>
+    </style>
+
+    <style name="ItemMenuViewBaseStyle" tools:ignore="ResourceName">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/px100</item>
+    </style>
+
+    <style name="ItemMenuViewStyleForSwitch" parent="ItemMenuViewBaseStyle">
+        <item name="showSwitchButton">true</item>
+        <!--<item name="switchButtonState">true</item>-->
+    </style>
+
+    <style name="ItemMenuViewStyleForSeekbar" parent="ItemMenuViewBaseStyle">
+        <item name="showSeekBar">true</item>
+        <item name="android:layout_width">54px</item>
+        <item name="android:layout_marginTop">@dimen/px10</item>
+        <item name="android:layout_marginLeft">54px</item>
+    </style>
+
+    <style name="ItemMenuViewStyleForRight" parent="ItemMenuViewBaseStyle">
+        <item name="showRightText">true</item>
+    </style>
+
+    <style name="ItemMenuViewStyleForRightText" parent="ItemMenuViewBaseStyle">
+        <item name="showOnlyRightText">true</item>
+    </style>
+
+
+    <style name="ItemContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/px80</item>
+        <item name="android:layout_marginLeft">@dimen/px50</item>
+        <item name="android:layout_marginRight">@dimen/px50</item>
+        <item name="android:paddingTop">@dimen/px10</item>
+        <item name="android:paddingBottom">@dimen/px10</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="ItemContainer1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/px140</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="ItemContainer2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/px100</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">@dimen/px51</item>
+    </style>
+
+    <style name="CommonText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/px26</item>
+    </style>
+
+    <style name="CommonTitleText" parent="CommonText">
+        <item name="android:layout_marginLeft">@dimen/px15</item>
+    </style>
+
+    <style name="CommonLeftText" parent="CommonText">
+        <item name="android:layout_marginLeft">@dimen/px54</item>
+        <item name="android:layout_marginTop">@dimen/px25</item>
+    </style>
+
+
+    <style name="CommonRightSwitch">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ItemLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/px5</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_marginLeft">@dimen/px30</item>
+        <item name="android:layout_marginRight">@dimen/px30</item>
+    </style>
+
+    <style name="SeekBarViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/px54</item>
+        <item name="android:layout_marginTop">@dimen/px23</item>
+    </style>
+</resources>
