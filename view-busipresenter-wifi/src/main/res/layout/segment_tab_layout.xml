@@ -1,0 +1,18 @@
+<com.adayo.commonui.tablayout.SegmentTabLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/px306"
+    android:layout_height="@dimen/px54"
+    android:layout_marginTop="@dimen/px10"
+    app:tl_bar_color="@color/tl_bar_color"
+    app:tl_bar_stroke_color="@color/tl_stoke_color"
+    app:tl_bar_stroke_width="@dimen/px2"
+    app:tl_indicator_anim_enable="true"
+    app:tl_indicator_color="@color/tl_indicator_color"
+    app:tl_indicator_margin_bottom="@dimen/px2"
+    app:tl_indicator_margin_left="@dimen/px2"
+    app:tl_indicator_margin_right="@dimen/px2"
+    app:tl_indicator_margin_top="@dimen/px2"
+    app:tl_tab_space_equal="true"
+    app:tl_textSelectColor="@color/switch_select_color"
+    app:tl_textUnselectColor="@color/switch_unselect_color" />

@@ -20,7 +20,6 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <!--<add-resource type="array" name="timezone_filters"></add-resource>-->
   <string-array name="timezone_filters">
     <item msgid="5296756001147094692">"美洲"</item>
     <item msgid="3005562397632768392">"欧洲"</item>
@@ -112,13 +111,13 @@
     <item msgid="197508606402264311">"已断开连接"</item>
     <item msgid="8578370891960825148">"失败"</item>
   </string-array>
-    <!-- no translation found for wifi_security:0 (8491993170197127709) -->
-    <!-- no translation found for wifi_security:1 (6524315248437318854) -->
-    <!-- no translation found for wifi_security:2 (1532568756571457140) -->
-    <!-- no translation found for wifi_security:3 (3620707702811709779) -->
-    <!-- no translation found for wifi_security_no_eap:0 (2084555984818107151) -->
-    <!-- no translation found for wifi_security_no_eap:1 (397579322683471524) -->
-    <!-- no translation found for wifi_security_no_eap:2 (1968820975358150484) -->
+  <!-- no translation found for wifi_security:0 (8491993170197127709) -->
+  <!-- no translation found for wifi_security:1 (6524315248437318854) -->
+  <!-- no translation found for wifi_security:2 (1532568756571457140) -->
+  <!-- no translation found for wifi_security:3 (3620707702811709779) -->
+  <!-- no translation found for wifi_security_no_eap:0 (2084555984818107151) -->
+  <!-- no translation found for wifi_security_no_eap:1 (397579322683471524) -->
+  <!-- no translation found for wifi_security_no_eap:2 (1968820975358150484) -->
   <!--<add-resource type="array" name="wifi_eap_method"></add-resource>-->
   <string-array name="wifi_eap_method">
     <item msgid="1160193392455075561">"PEAP"</item>
@@ -316,7 +315,7 @@
   <!--<add-resource type="array" name="permissions"></add-resource>-->
   <string-array name="permissions" />
   <string-array name="tab_layout">
-    <item>"加密"</item>
-    <item>"免密"</item>
+    <item>"encryption"</item>
+    <item>"Free secret"</item>
   </string-array>
 </resources>

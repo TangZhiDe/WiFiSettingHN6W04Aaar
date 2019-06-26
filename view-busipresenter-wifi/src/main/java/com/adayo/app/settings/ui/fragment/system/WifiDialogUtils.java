@@ -209,7 +209,7 @@ public class WifiDialogUtils extends otherDialog {
 
 
     //修改密码
-    public void DialogSetPassWord() {
+    public void DialogSetPassWord(final boolean isUpdateType) {
         final Wifi_ConfirmDialog wifi_confirmDialog = Wifi_ConfirmDialog.getInstance(mContext,2,mWiFiUtil.getWifiAPconfigure().preSharedKey);
         wifi_confirmDialog.showDialog(NetFragment.currentwifiNightMode);
         wifi_confirmDialog.setCancelable(false);
@@ -241,6 +241,9 @@ public class WifiDialogUtils extends otherDialog {
             @Override
             public void doCancel() {
                 wifi_confirmDialog.dismissDialog();
+                if(isUpdateType){
+                    netfragment.handler.sendEmptyMessage(0x02);
+                }
             }
 
         });

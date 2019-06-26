@@ -27,6 +27,8 @@ import com.adayo.app.settings.listener.WifiItemOnclickListener;
 import com.adayo.app.settings.ui.view.dialog.SwitchButton;
 
 import com.adayo.app.settings.utils.WiFiUtil;
+import com.adayo.commonui.tablayout.SegmentTabLayout;
+import com.adayo.commonui.tablayout.listener.OnTabSelectListener;
 import com.adayo.systemserviceproxy.SystemServiceManager;
 
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ public class NetFragment extends BaseFragment {
     public static final String EXTRA_WIFI_AP_STATE = "wifi_state";
     private WifiApReceiver mReceiver;
 
-    public static SwitchButton security_type;
+    public static SegmentTabLayout security_type;
 //    public static TextView tv_sec_nopass;
 //    public static TextView tv_sec_jiami;
     public static LinearLayout lin_wifiap_set;
@@ -83,7 +85,6 @@ public class NetFragment extends BaseFragment {
                     netfragment = new NetFragment();
                 }
             }
-
         }
         return netfragment;
     }
@@ -94,6 +95,10 @@ public class NetFragment extends BaseFragment {
                 case 0x01:
                     Log.d(TAG, "handleMessage: 0x01" );
 //                    startRotate();
+                    break;
+                case 0x02:
+                    Log.d(TAG, "handleMessage: 0x02" );
+                    security_type.setCurrentTab(1);
                     break;
             }
             return false;
@@ -130,9 +135,14 @@ public class NetFragment extends BaseFragment {
 
 
     private void updateImg() {
-        security_type.flush(getMContext());
+//        security_type.flush(getMContext());
         btn_set_ssid.setBackground(getMContext().getDrawable(R.drawable.setting_button_bg_p));
         btn_set_pass.setBackground(getMContext().getDrawable(R.drawable.setting_button_bg_p));
+        security_type.setIndicatorColor(getResources().getColor(R.color.tl_indicator_color));
+        security_type.setTextSelectColor(getResources().getColor(R.color.switch_select_color));
+        security_type.setTextUnselectColor(getResources().getColor(R.color.switch_unselect_color));
+        security_type.setBarColor(getResources().getColor(R.color.tl_bar_color));
+        security_type.setBarStrokeColor(getResources().getColor(R.color.tl_stoke_color));
         int i = instance.checkState();
         Log.d(TAG, "initWifiUI: wifi状态=="+i );
         if(i == WifiManager.WIFI_STATE_DISABLED){
@@ -158,7 +168,8 @@ public class NetFragment extends BaseFragment {
         wifi_internet.setText(getMContext().getResources().getString(R.string.string1));
         wifi_rd.setText(getMContext().getResources().getString(R.string.string12));
         wifi_internet1.setText(getMContext().getResources().getString(R.string.string1));
-        security_type.flush(getMContext());
+        security_type.setTabData(getMContext().getResources().getStringArray(R.array.tab_layout));
+//        security_type.flush(getMContext());
         btn_set_ssid.setText(getMContext().getResources().getString(R.string.string16));
         btn_set_pass.setText(getMContext().getResources().getString(R.string.string16));
         if (instance.getSecurityType()  == 1) {/*无密码类型*/
@@ -178,6 +189,7 @@ public class NetFragment extends BaseFragment {
         tv_ap_pass.setTextColor(getMContext().getResources().getColor(R.color.normal_color));
         tv_ap_ssid.setTextColor(getMContext().getResources().getColor(R.color.normal_color));
         adapter.notifyDataSetChanged();
+
     }
 
 
@@ -237,11 +249,11 @@ public class NetFragment extends BaseFragment {
         wifi_rd = (TextView) mContentView.findViewById(R.id.wifi_rd);
         wifi_internet1 = (TextView) mContentView.findViewById(R.id.wifi_internet1);
         ap_part = (LinearLayout) mContentView.findViewById(R.id.ap_part);
-
+        security_type.setTabData(getMContext().getResources().getStringArray(R.array.tab_layout));
         mSystemServiceManager.conectsystemService();
         try {
             Byte TBOX = mSystemServiceManager.getOffLineConfigInfo("HN6W04A_IsTBOX");
-            // TBOXString = Integer.toBinaryString((TBOX & 0xFF)+0x100).substring(1); //转换成二进制字符串,根据自己需要使用
+//             TBOXString = Integer.toBinaryString((TBOX & 0xFF)+0x100).substring(1); //转换成二进制字符串,根据自己需要使用
             Log.d(TAG, "initView: TBOX = "+TBOX );
             if(TBOX == 0x0){
                 //没有TBOX
@@ -310,6 +322,11 @@ public class NetFragment extends BaseFragment {
             Log.d(TAG, "初始化热点UI开启");
             ap_power.setImageResource(R.drawable.wifi_setting_btn_open);//开启状态
             lin_wifiap_set.setVisibility(View.VISIBLE);
+            if(instance.getSecurityType()  == 1){
+                security_type.setCurrentTab(1);
+            } else {
+                security_type.setCurrentTab(0);
+            }
         } else if (instance.getWifiApState() == WIFI_AP_STATE_DISABLED) {
             Log.d(TAG, "初始化热点UI关闭");
             ap_power.setImageResource(R.drawable.wifi_setting_btn_close);//关闭状态
@@ -343,8 +360,13 @@ public class NetFragment extends BaseFragment {
         listview.setOnItemClickListener(listener);
         btn_set_pass.setOnClickListener(listener);
         btn_set_ssid.setOnClickListener(listener);
-        security_type.setHydropowerListener(listener);
-        security_type.setSoftFloorListener(listener);
+
+//        security_type.setHydropowerListener(listener);
+//        security_type.setSoftFloorListener(listener);
+        security_type.setOnTabSelectListener(listener);
+
+
+
 //        wifi_loading.setOnClickListener(listener);
         wifi_refresh.setOnClickListener(listener);
 

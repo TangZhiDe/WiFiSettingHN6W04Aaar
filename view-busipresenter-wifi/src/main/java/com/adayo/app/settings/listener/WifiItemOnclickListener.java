@@ -12,13 +12,15 @@ import com.adayo.app.settings.ui.fragment.system.WifiDialogUtils;
 import com.adayo.app.settings.ui.fragment.system.WifiReceiver;
 import com.adayo.app.settings.ui.view.dialog.SwitchButton;
 import com.adayo.app.settings.utils.WiFiUtil;
+import com.adayo.commonui.tablayout.listener.OnTabSelectListener;
 
 
 /**
  * Created by Administrator on 2018/12/18 0018.
  */
 //wifi列表点击事件
-public class WifiItemOnclickListener implements View.OnClickListener, AdapterView.OnItemClickListener, SwitchButton.HydropowerListener, SwitchButton.SoftFloorListener {
+public class WifiItemOnclickListener implements View.OnClickListener, AdapterView.OnItemClickListener
+        , SwitchButton.HydropowerListener, SwitchButton.SoftFloorListener,OnTabSelectListener {
 
     private static String TAG = "WifiItemOnclickListener";
     private Context mContex;
@@ -84,7 +86,7 @@ public class WifiItemOnclickListener implements View.OnClickListener, AdapterVie
                 Log.d(TAG, "不允许设置密码");
             } else {
                 //TODO show dialog to set ap password
-                dialoginstance.DialogSetPassWord();
+                dialoginstance.DialogSetPassWord(false);
             }
 
         }else if (v.getId() == R.id.wifi_refresh) {
@@ -116,7 +118,7 @@ public class WifiItemOnclickListener implements View.OnClickListener, AdapterVie
             }, 3000);
         } else if (isChecked) {/*选择加密*/
             Log.d(TAG, "手动设置密码，热点将在设置成功后重新开启");
-            dialoginstance.DialogSetPassWord();
+            dialoginstance.DialogSetPassWord(true);
         }
 
 
@@ -165,5 +167,22 @@ public class WifiItemOnclickListener implements View.OnClickListener, AdapterVie
         //免密
         Log.d(TAG, "hydropower: 免密");
         SelectType(false);
+    }
+
+    @Override
+    public void onTabSelect(int position) {
+        if(position == 0){
+            Log.d(TAG, "onTabSelect: 加密");
+
+            SelectType(true);
+        }else {
+            Log.d(TAG, "onTabSelect: 免密");
+            SelectType(false);
+        }
+    }
+
+    @Override
+    public void onTabReselect(int position) {
+
     }
 }

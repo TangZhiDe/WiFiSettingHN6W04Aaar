@@ -4,6 +4,10 @@
     <style name="AppTheme" parent="CommonTheme">
 
     </style>
+    <!--<style name="AppTheme1" parent="Theme.AppCompat.Light.DarkActionBar">-->
+        <!--<item name="android:fitsSystemWindows">true</item>-->
+        <!--<item name="android:windowBackground">@android:color/black</item>-->
+    <!--</style>-->
 
     <style name="dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>  //Dialog的windowFrame框为无

@@ -11,4 +11,8 @@
     <color name="switch_select_color">#fff</color>
     <color name="switch_unselect_color">#868686</color>
     <color name="hint_color">#7f8793</color>
+    <color name="dialog_selected_btn">#008bff</color>
+    <color name="tl_bar_color">#38404d</color>
+    <color name="tl_stoke_color">#38404d</color>
+    <color name="tl_indicator_color">#9ca2ac</color>
 </resources>

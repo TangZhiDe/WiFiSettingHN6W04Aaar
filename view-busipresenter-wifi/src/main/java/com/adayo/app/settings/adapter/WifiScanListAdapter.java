@@ -56,7 +56,6 @@ public class WifiScanListAdapter extends android.widget.BaseAdapter {
         } else {
             info = (wifi_info) convertView.getTag();
         }
-
         if (result != null) {
             info.tv_ssid.setTextColor(mContext.getResources().getColor(R.color.normal_color));
             info.tv_ssid.setText(result.SSID.toString());//设置SSID
@@ -77,8 +76,6 @@ public class WifiScanListAdapter extends android.widget.BaseAdapter {
         }
 
         updataUI();
-
-
         return convertView;
     }
 
@@ -92,7 +89,7 @@ public class WifiScanListAdapter extends android.widget.BaseAdapter {
     //更新每个item的信号强度，
     private void updataUI() {
         int level = WiFiUtil.getInstance(mContext).getLevel(result.level);
-        Log.d("TAG", "updataUI:level=== " + level + "result.capabilities=" + result.capabilities);
+        Log.d("TAG", "updataUI:level=== " + level + "result.capabilities=" + result.capabilities+"---level---"+result.level);
         boolean noPass = isNoPass(result.capabilities);
         if (level == 0) {
 //                if (!result.capabilities.equals( WiFiUtil.Data.WIFI_CIPHER_NOPASS)) {

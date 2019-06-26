@@ -4,12 +4,14 @@ package com.adayo.app.settings.ui.view.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -37,7 +39,7 @@ public class Wifi_ConfirmDialog extends Dialog {
     public EditText alert_wifi_psw;
     private Button alert_wifi_disconnect;
     public TextView alert_wifi_name;
-    private TextView alert_wifi_cancel;
+    private Button alert_wifi_cancel;
     private LinearLayout alert_wifi_dialog;
     private LinearLayout alert_wifi_edit;
     private int type; //0:连接wifi  1:修改热点名称  2:修改热点密码 3:断开连接
@@ -46,6 +48,8 @@ public class Wifi_ConfirmDialog extends Dialog {
     public TextView alert_wifi_name1;
     private TextView alert_wifi_tip1;
     private String input;
+
+    private Button alert_wifi_disconnect1;
 
     public interface ClickListenerInterface {
 
@@ -64,7 +68,7 @@ public class Wifi_ConfirmDialog extends Dialog {
     public static Wifi_ConfirmDialog getInstance(Context context,int type,String input) {
         if (dialog == null) {
             synchronized (Wifi_ConfirmDialog.class) {
-                Log.d("TAG", "getInstance: ");
+                Log.d("TAG", "getInstance: 创建新的dialog");
                 dialog = new Wifi_ConfirmDialog(context,type,input);
             }
         }
@@ -126,27 +130,33 @@ public class Wifi_ConfirmDialog extends Dialog {
         alert_wifi_tip1.setTextColor(context.getResources().getColor(R.color.unselect_color));
         alert_wifi_name1.setTextColor(context.getResources().getColor(R.color.black_color));
         alert_wifi_psw.setHintTextColor(context.getResources().getColor(R.color.hint_color));
-        alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.hint_color));
+//        alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.hint_color));
         alert_wifi_cancel.setText(context.getResources().getString(R.string.string5));
+
         if(type == 0){
             alert_wifi_dialog.setBackgroundResource(R.drawable.popup_bg3);
             alert_wifi_disconnect.setText(context.getResources().getString(R.string.string4));
+            alert_wifi_disconnect1.setText(context.getResources().getString(R.string.string4));
             alert_wifi_psw.setHint(context.getResources().getString(R.string.string3));
         }else if(type == 1){
             alert_wifi_dialog.setBackgroundResource(R.drawable.popup_bg3);
             alert_wifi_name.setText(context.getResources().getString(R.string.string15));
             alert_wifi_psw.setText(input);
             alert_wifi_disconnect.setText(context.getResources().getString(R.string.string18));
+            alert_wifi_disconnect1.setText(context.getResources().getString(R.string.string18));
         }else if(type == 2){
             alert_wifi_dialog.setBackgroundResource(R.drawable.popup_bg3);
             alert_wifi_name.setText(context.getResources().getString(R.string.string17));
             alert_wifi_psw.setText(input);
             alert_wifi_disconnect.setText(context.getResources().getString(R.string.string18));
+            alert_wifi_disconnect1.setText(context.getResources().getString(R.string.string18));
         }else if(type == 3){
+//            ColorStateList colorStateList = new ColorStateList(states, colors);
             alert_wifi_dialog.setBackgroundResource(R.drawable.wifi_popup_bg);
-            alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.dialog_color));
+//            alert_wifi_disconnect.setTextColor(colorStateList);
             alert_wifi_tip1.setText(context.getResources().getString(R.string.string10));
             alert_wifi_disconnect.setText(context.getResources().getString(R.string.string11));
+            alert_wifi_disconnect1.setText(context.getResources().getString(R.string.string11));
         }
     }
 
@@ -159,6 +169,7 @@ public class Wifi_ConfirmDialog extends Dialog {
         alert_wifi_dialog = view.findViewById(R.id.alert_wifi_dialog);
         alert_wifi_edit = view.findViewById(R.id.alert_wifi_edit);
         alert_wifi_disconnect = view.findViewById(R.id.alert_wifi_disconnect);
+        alert_wifi_disconnect1 = view.findViewById(R.id.alert_wifi_disconnect1);
         alert_wifi_name = view.findViewById(R.id.alert_wifi_name);
         alert_wifi_tip = view.findViewById(R.id.alert_wifi_tip);
         alert_wifi_display = view.findViewById(R.id.alert_wifi_display);
@@ -173,6 +184,9 @@ public class Wifi_ConfirmDialog extends Dialog {
             alert_wifi_model1.setVisibility(View.VISIBLE);
             alert_wifi_model2.setVisibility(View.GONE);
             alert_wifi_disconnect.setText(context.getResources().getString(R.string.string11));
+            alert_wifi_disconnect1.setVisibility(View.GONE);
+            alert_wifi_disconnect.setVisibility(View.VISIBLE);
+//            alert_wifi_disconnect1.setText(context.getResources().getString(R.string.string11));
         }else {
             alert_wifi_model1.setVisibility(View.GONE);
             alert_wifi_model2.setVisibility(View.VISIBLE);
@@ -184,9 +198,10 @@ public class Wifi_ConfirmDialog extends Dialog {
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         lp.width = 640;
         lp.height = 330;
-        lp.x = -250;
-        lp.y = 50;
-//        lp.gravity = Gravity.CENTER;
+        //-250
+        lp.x = 360;
+//        lp.y = 50;
+        lp.gravity = Gravity.CENTER_VERTICAL | Gravity.START;
         dialogWindow.setAttributes(lp);
     }
 
@@ -225,25 +240,33 @@ public class Wifi_ConfirmDialog extends Dialog {
                 @Override
                 public void afterTextChanged(Editable s) {
                     if (alert_wifi_psw.getText().toString().length() >= 8) {
-                        alert_wifi_disconnect.setClickable(true);
-                        alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.dialog_color));
+//                        alert_wifi_disconnect.setClickable(true);
+                        alert_wifi_disconnect1.setVisibility(View.GONE);
+                        alert_wifi_disconnect.setVisibility(View.VISIBLE);
+//                        ColorStateList colorStateList = new ColorStateList(states, colors);
+//                        alert_wifi_disconnect.setTextColor(colorStateList);
                     } else {
-                        alert_wifi_disconnect.setClickable(false);
-                        alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.hint_color));
+//                        alert_wifi_disconnect.setClickable(false);
+
+                        alert_wifi_disconnect.setVisibility(View.GONE);
+                        alert_wifi_disconnect1.setVisibility(View.VISIBLE);
+//                        alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.hint_color));
                     }
                 }
             });
             alert_wifi_psw.setHint(context.getResources().getString(R.string.string3));
             alert_wifi_disconnect.setText(context.getResources().getString(R.string.string4));
+            alert_wifi_disconnect1.setText(context.getResources().getString(R.string.string4));
             //置灰
-            alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.hint_color));
+//            alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.hint_color));
         }else if(type == 1){
             //修改热点名称
             alert_wifi_display.setVisibility(View.GONE);
             alert_wifi_psw.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             alert_wifi_name.setText(context.getResources().getString(R.string.string15));
             alert_wifi_disconnect.setText(context.getResources().getString(R.string.string18));
-            alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.dialog_color));
+            alert_wifi_disconnect1.setText(context.getResources().getString(R.string.string18));
+//            alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.dialog_color));
             alert_wifi_psw.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -258,11 +281,17 @@ public class Wifi_ConfirmDialog extends Dialog {
                 @Override
                 public void afterTextChanged(Editable s) {
                     if (alert_wifi_psw.getText().toString().length() > 0) {
-                        alert_wifi_disconnect.setClickable(true);
-                        alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.dialog_color));
+
+                        alert_wifi_disconnect1.setVisibility(View.GONE);
+                        alert_wifi_disconnect.setVisibility(View.VISIBLE);
+//                        alert_wifi_disconnect.setClickable(true);
+//                        ColorStateList colorStateList = new ColorStateList(states, colors);
+//                        alert_wifi_disconnect.setTextColor(colorStateList);
                     } else {
-                        alert_wifi_disconnect.setClickable(false);
-                        alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.hint_color));
+//                        alert_wifi_disconnect.setClickable(false);
+//                        alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.hint_color));
+                        alert_wifi_disconnect.setVisibility(View.GONE);
+                        alert_wifi_disconnect1.setVisibility(View.VISIBLE);
                     }
                 }
             });
@@ -272,8 +301,9 @@ public class Wifi_ConfirmDialog extends Dialog {
             alert_wifi_psw.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             alert_wifi_name.setText(context.getResources().getString(R.string.string17));
             alert_wifi_disconnect.setText(context.getResources().getString(R.string.string18));
+            alert_wifi_disconnect1.setText(context.getResources().getString(R.string.string18));
             //置灰
-            alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.hint_color));
+//            alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.hint_color));
             alert_wifi_psw.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -288,11 +318,16 @@ public class Wifi_ConfirmDialog extends Dialog {
                 @Override
                 public void afterTextChanged(Editable s) {
                     if (alert_wifi_psw.getText().toString().length() >= 8) {
-                        alert_wifi_disconnect.setClickable(true);
-                        alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.dialog_color));
+                        alert_wifi_disconnect1.setVisibility(View.GONE);
+                        alert_wifi_disconnect.setVisibility(View.VISIBLE);
+//                        alert_wifi_disconnect.setClickable(true);
+//                        ColorStateList colorStateList = new ColorStateList(states, colors);
+//                        alert_wifi_disconnect.setTextColor(colorStateList);
                     } else {
-                        alert_wifi_disconnect.setClickable(false);
-                        alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.hint_color));
+                        alert_wifi_disconnect1.setVisibility(View.VISIBLE);
+                        alert_wifi_disconnect.setVisibility(View.GONE);
+//                        alert_wifi_disconnect.setClickable(false);
+//                        alert_wifi_disconnect.setTextColor(context.getResources().getColor(R.color.hint_color));
                     }
                 }
             });

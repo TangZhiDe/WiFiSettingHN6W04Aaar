@@ -1,22 +1,28 @@
 package com.adayo.app.settings.utils;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.ResultReceiver;
 import android.util.Log;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+
 import static com.adayo.app.settings.ui.fragment.system.NetFragment.results;
 
 /**
  * WiFi帮助类
  */
 public class WiFiUtil {
+    private final ConnectivityManager mConnectivityManager;
     // 定义WifiManager对象
     private WifiManager mWifiManager;
     // 定义WifiInfo对象
@@ -27,6 +33,7 @@ public class WiFiUtil {
     private List<WifiConfiguration> mWifiConfiguration;
     // 定义一个WifiLock
     private WifiManager.WifiLock mWifiLock;
+    private Context context;
     public ScanResult scanListResult = null; //点击的wifi列表下标
     private String TAG = "TAG";
     private static WiFiUtil util;
@@ -43,6 +50,7 @@ public class WiFiUtil {
     public static final int WIFI_LOCK_TYPE_WPA2 = 2;
     public static final int WIFI_LOCK_TYPE_WEP = 3;
     public static final int WIFI_LOCK_TYPE_OPEN = 0;
+    private final ShareManager shareManager;
 
     /**
      * 单例方法
@@ -63,12 +71,12 @@ public class WiFiUtil {
     private WiFiUtil(Context context) {
         // 取得WifiManager对象
         mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-
+        shareManager = new ShareManager(context);
+        mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        this.context = context;
         // 取得WifiInfo对象
         mWifiInfo = mWifiManager.getConnectionInfo();
     }
-
-
 
 
     // 打开WIFI
@@ -122,6 +130,7 @@ public class WiFiUtil {
         // 连接配置好的指定ID的网络
         mWifiManager.enableNetwork(mWifiConfiguration.get(index).networkId, true);
     }
+
     // 指定配置好的网络进行连接
     public void connectConfigurationByNetworkId(int networkId) {
         // 索引大于配置好的网络索引返回
@@ -180,7 +189,7 @@ public class WiFiUtil {
 
     // 得到连接的ID
     public int getNetworkId() {
-        mWifiInfo =  mWifiManager.getConnectionInfo();
+        mWifiInfo = mWifiManager.getConnectionInfo();
         return (mWifiInfo == null) ? 0 : mWifiInfo.getNetworkId();
     }
 
@@ -189,7 +198,7 @@ public class WiFiUtil {
         List<WifiConfiguration> configs = mWifiManager.getConfiguredNetworks();
         for (int i = 0; i < configs.size(); i++) {
             WifiConfiguration wifiConfiguration = configs.get(i);
-            Log.d(TAG, "getNetworkId: "+wifiConfiguration.toString());
+            Log.d(TAG, "getNetworkId: " + wifiConfiguration.toString());
             if (wifiConfiguration.SSID.equals("\"" + ssid + "\"")) {
                 networkId = wifiConfiguration.networkId;
             }
@@ -199,7 +208,7 @@ public class WiFiUtil {
 
     // 得到连接的SSID
     public String getSSID() {
-        mWifiInfo =  mWifiManager.getConnectionInfo();
+        mWifiInfo = mWifiManager.getConnectionInfo();
         return (mWifiInfo == null) ? "" : mWifiInfo.getSSID();
     }
 
@@ -208,12 +217,12 @@ public class WiFiUtil {
         return (mWifiInfo == null) ? "NULL" : mWifiInfo.toString();
     }
 
-    public  void paixu(){
-        if( results != null){
+    public void paixu() {
+        if (results != null) {
             //去重
-            for  ( int i = 0; i < results.size() - 1;i++ )  {
-                for  ( int j = results.size()-1; j > i;j--) {
-                    if  (results.get(j).SSID.equals(results.get(i).SSID)) {
+            for (int i = 0; i < results.size() - 1; i++) {
+                for (int j = results.size() - 1; j > i; j--) {
+                    if (results.get(j).SSID.equals(results.get(i).SSID)) {
                         results.remove(j);
                     }
                 }
@@ -253,7 +262,7 @@ public class WiFiUtil {
         // 添加WIFI网络
         int networkId = mWifiManager.addNetwork(configuration);
 
-        Log.d(TAG, "addWiFiNetwork: networkId=="+networkId);
+        Log.d(TAG, "addWiFiNetwork: networkId==" + networkId);
         if (networkId == -1) {
             return -1;
         }
@@ -286,7 +295,7 @@ public class WiFiUtil {
 //            mWifiManager.disableNetwork(id);
 //        }
         List<WifiConfiguration> configuredNetworks = mWifiManager.getConfiguredNetworks();
-        if(configuredNetworks != null){
+        if (configuredNetworks != null) {
             for (int i = 0; i < configuredNetworks.size(); i++) {
                 mWifiManager.disableNetwork(configuredNetworks.get(i).networkId);
             }
@@ -296,15 +305,15 @@ public class WiFiUtil {
     }
 
 
-    public void removeNet(String ssid){
+    public void removeNet(String ssid) {
         List<WifiConfiguration> configuredNetworks = mWifiManager.getConfiguredNetworks();
-        Log.d(TAG, "removeNet: " );
-        if(configuredNetworks != null){
+        Log.d(TAG, "removeNet: ");
+        if (configuredNetworks != null) {
             for (int i = 0; i < configuredNetworks.size(); i++) {
                 WifiConfiguration wifiConfiguration = configuredNetworks.get(i);
-                Log.d(TAG, "removeNet: SSID=== "+wifiConfiguration.SSID );
-                if(wifiConfiguration.SSID.equals("\"" +ssid+ "\"")){
-                    Log.d(TAG, "removeNet: 删除网络 ssid=="+ ssid+"---networkId="+wifiConfiguration.networkId);
+                Log.d(TAG, "removeNet: SSID=== " + wifiConfiguration.SSID);
+                if (wifiConfiguration.SSID.equals("\"" + ssid + "\"")) {
+                    Log.d(TAG, "removeNet: 删除网络 ssid==" + ssid + "---networkId=" + wifiConfiguration.networkId);
                     mWifiManager.removeNetwork(wifiConfiguration.networkId);
                     break;
                 }
@@ -385,9 +394,9 @@ public class WiFiUtil {
         config.SSID = "\"" + SSID + "\"";
 
         if (type == Data.WIFI_CIPHER_NOPASS) {
-            config.wepKeys[0] = "";
+//            config.wepKeys[0] = "";
             config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-            config.wepTxKeyIndex = 0;
+//            config.wepTxKeyIndex = 0;
         } else if (type == Data.WIFI_CIPHER_WEP) {
             config.hiddenSSID = true;
             config.wepKeys[0] = "\"" + password + "\"";
@@ -452,12 +461,13 @@ public class WiFiUtil {
     }
 
 
-    public void wifi_close()  {
+    public void wifi_close() {
         if (mWifiManager.isWifiEnabled()) {
             mWifiManager.setWifiEnabled(false);
             Log.d(TAG, " wifi off");
         }
     }
+
     private void onscanresult(List<ScanResult> scanResults) {
         // 将每个搜索到的热点和其他热点进行对比，有重名就去除
         if (scanResults.size() > 0) {
@@ -474,6 +484,7 @@ public class WiFiUtil {
         }
 
     }
+
     public List getScanResult() {
         if (mWifiManager.isWifiEnabled()) {
             List<ScanResult> scanResults = mWifiManager.getScanResults();
@@ -485,12 +496,13 @@ public class WiFiUtil {
         return results;
     }
 
-    public void startScan()  {
+    public void startScan() {
         if (mWifiManager.isWifiEnabled()) {
             mWifiManager.startScan();//开始搜索
         }
     }
-    public boolean isWifiEnabled(){
+
+    public boolean isWifiEnabled() {
         // Log.d(TAG,"isWifiEnabled");
         return mWifiManager.isWifiEnabled();
     }
@@ -500,15 +512,17 @@ public class WiFiUtil {
         Log.d(TAG, "disconnect >>>>>>>>success");
         mWifiManager.disconnect();
     }
-    public void connectNoPassNet(String ssid)  {
+
+    public void connectNoPassNet(String ssid) {
         WifiConfiguration configuration = creatWifiInfo(ssid, "", 1);
-            int net_id = mWifiManager.addNetwork(configuration);
-            mWifiManager.updateNetwork(configuration);
-            mWifiManager.enableNetwork(net_id, true);
-            mWifiManager.saveConfiguration();
-            mWifiManager.reconnect();
-            Log.d(TAG, "connectNoPassNet----->>>---success");
+        int net_id = mWifiManager.addNetwork(configuration);
+        mWifiManager.updateNetwork(configuration);
+        mWifiManager.enableNetwork(net_id, true);
+        mWifiManager.saveConfiguration();
+        mWifiManager.reconnect();
+        Log.d(TAG, "connectNoPassNet----->>>---success");
     }
+
     private WifiConfiguration creatWifiInfo(String SSID, String password, int type) {
         WifiConfiguration configuration = new WifiConfiguration();
         configuration.allowedAuthAlgorithms.clear();
@@ -554,6 +568,7 @@ public class WiFiUtil {
         }
         return configuration;
     }
+
     private WifiConfiguration IsExsits(String SSID) {
         List<WifiConfiguration> existingConfigs = mWifiManager.getConfiguredNetworks();
         for (WifiConfiguration existingConfig : existingConfigs) {
@@ -567,43 +582,12 @@ public class WiFiUtil {
     //========================热点======================
 
 
-    public void wifiAP_open() {
-        if (getWifiApState() != WIFI_AP_STATE_ENABLED) {
-//            if (mWifiManager.isWifiEnabled()) {
-//                mWifiManager.setWifiEnabled(false);///先关闭wifi 2018 12 11
-//            }
-            //Android8.0及以上版本
-            if (Build.VERSION.SDK_INT >= 26) {
-//                if(connectivitymanager == null) {
-//                    Log.d(TAG,"connectivitymanager == null");
-//                    return;
-//                }
-//                connectivitymanager.startTethering(ConnectivityManager.TETHERING_WIFI, true, new ONStartTetheringCallback());
-                mWifiManager.startSoftAp(getWifiAPconfigure());
-            }
-        }
-    }
-
-    public void wifiAP_close() {
-        //TODO 关闭热点
-        if (getWifiApState() != WIFI_AP_STATE_DISABLED) {
-            if (Build.VERSION.SDK_INT >= 26) {
-//                if(connectivitymanager == null) {
-//                    Log.d(TAG,"setwifiAPdisable  connectivitymanager == null");
-//                    return;
-//                }
-//                connectivitymanager.stopTethering(ConnectivityManager.TETHERING_WIFI);
-                    mWifiManager.stopSoftAp();
-            }
-        }
-    }
-
-    public WifiConfiguration getWifiAPconfigure(){
+    public WifiConfiguration getWifiAPconfigure() {
         return mWifiManager.getWifiApConfiguration();
     }
 
 
-    public int getSecurityType()  {
+    public int getSecurityType() {
         //TODO  加密类型  无密码类型
         WifiConfiguration wifiAPconfigure = getWifiAPconfigure();
         if (wifiAPconfigure.preSharedKey == null) {
@@ -615,26 +599,26 @@ public class WiFiUtil {
         }
     }
 
-    public void onlySetAPSSID(String ssid,boolean wpa_psk) {
+    public void onlySetAPSSID(String ssid, boolean wpa_psk) {
         setSSIDorPassword(ssid, "", ONLY_SSID, wpa_psk);
 
     }
 
-    public void onlySetAPPassword(String password,boolean wpa_psk)  {
-        setSSIDorPassword("", password, ONLY_PASS,wpa_psk);
+    public void onlySetAPPassword(String password, boolean wpa_psk) {
+        setSSIDorPassword("", password, ONLY_PASS, wpa_psk);
     }
 
 
 
-     /*
-    * 针对不同的UI端设置需求，提供两个接口，接口1适用于单独设置ssid或密码。接口2适用于同时设置ssid与密码
-    *
-    * 接口1 单独设置
-    *
-    * 接口2  账号密码一次修改
-    * */
+    /*
+     * 针对不同的UI端设置需求，提供两个接口，接口1适用于单独设置ssid或密码。接口2适用于同时设置ssid与密码
+     *
+     * 接口1 单独设置
+     *
+     * 接口2  账号密码一次修改
+     * */
 
-    private void setSSIDorPassword(String ssid, String password, int tag,Boolean wpa_psk) {
+    private void setSSIDorPassword(String ssid, String password, int tag, Boolean wpa_psk) {
         WifiConfiguration apconf = new WifiConfiguration();
         if (tag == ONLY_SSID) {/*只修改ssid，不修改密码*/
             apconf.SSID = ssid;
@@ -671,51 +655,186 @@ public class WiFiUtil {
         mWifiManager.setWifiApConfiguration(apconf);//修改hostapd.conf设置SSID和pass
     }
 
-    public int getWifiApState(){
+    public int getWifiApState() {
         return mWifiManager.getWifiApState();
     }
 
-    public boolean setWifiAp(String apName, String apPassword) {
+//    public boolean wifiAP_open() {
+//        if (mWifiManager != null) {
+//            int wifiState = mWifiManager.getWifiState();
+//            boolean isWifiEnabled = ((wifiState == WifiManager.WIFI_STATE_ENABLED) || (wifiState == WifiManager.WIFI_STATE_ENABLING));
+//            if (isWifiEnabled)
+//                mWifiManager.setWifiEnabled(false);
+//        }
+//        try {
+//            //热点的配置类
+//            WifiConfiguration apConfig = new WifiConfiguration();
+//            //配置热点的名称(可以在名字后面加点随机数什么的)
+//            apConfig.SSID = "DFSK";
+//            apConfig.preSharedKey = "12345678";
+//            //不设置密码
+//            apConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+//            //android 8.0开启wifi热点
+//            if (Build.VERSION.SDK_INT >= 26) {
+//                Method configMethod = mWifiManager.getClass().getMethod("setWifiApConfiguration", WifiConfiguration.class);
+//                try {
+//                    boolean isConfigured = (Boolean) configMethod.invoke(mWifiManager, apConfig);
+//                } catch (InvocationTargetException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                Method method = mWifiManager.getClass().getMethod("startSoftAp", WifiConfiguration.class);
+//                //返回热点打开状态
+//                return (Boolean) method.invoke(mWifiManager, apConfig);
+//            } else {
+//                //通过反射调用设置热点
+//                Method method = mWifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
+//                //返回热点打开状态
+//                return (Boolean) method.invoke(mWifiManager, apConfig, true);
+//            }
+//        } catch (NoSuchMethodException e) {
+//            e.getMessage();
+//            return false;
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//            return false;
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
 
+
+//    public void wifiAP_open() {
+//        if (mWifiManager != null) {
+//            int wifiState = mWifiManager.getWifiState();
+//            boolean isWifiEnabled = ((wifiState == WifiManager.WIFI_STATE_ENABLED) || (wifiState == WifiManager.WIFI_STATE_ENABLING));
+//            if (isWifiEnabled)
+//                mWifiManager.setWifiEnabled(false);
+//        }
+//        if (mConnectivityManager != null) {
+//            try {
+//                Field internalConnectivityManagerField = ConnectivityManager.class.getDeclaredField("mService");
+//                internalConnectivityManagerField.setAccessible(true);
+//                WifiConfiguration apConfig = new WifiConfiguration();
+//                apConfig.SSID = "DFSK";
+//                apConfig.preSharedKey = "12345678";
+//
+//                StringBuffer sb = new StringBuffer();
+//                Class internalConnectivityManagerClass = Class.forName("android.net.IConnectivityManager");
+//                ResultReceiver dummyResultReceiver = new ResultReceiver(null);
+//                try {
+//
+//                    Method mMethod = mWifiManager.getClass().getMethod("setWifiApConfiguration", WifiConfiguration.class);
+//                    mMethod.invoke(mWifiManager, apConfig);
+//                    Method startTetheringMethod = internalConnectivityManagerClass.getDeclaredMethod("startTethering",
+//                            int.class,
+//                            ResultReceiver.class,
+//                            boolean.class);
+//
+//                    startTetheringMethod.invoke(internalConnectivityManagerClass,
+//                            0,
+//                            dummyResultReceiver,
+//                            true);
+//                } catch (NoSuchMethodException e) {
+//                    Method startTetheringMethod = internalConnectivityManagerClass.getDeclaredMethod("startTethering",
+//                            int.class,
+//                            ResultReceiver.class,
+//                            boolean.class,
+//                            String.class);
+//
+//                    startTetheringMethod.invoke(internalConnectivityManagerClass,
+//                            0,
+//                            dummyResultReceiver,
+//                            false,
+//                            context.getPackageName());
+//                } catch (InvocationTargetException e) {
+//                    sb.append(11 + (e.getMessage()));
+//                    e.printStackTrace();
+//                } finally {
+//                    Log.i(TAG, "startTethering: " + sb.toString());
+//                }
+//
+//
+//            } catch (Exception e) {
+//                Log.e(TAG, "WifiApManager.startTethering" + Log.getStackTraceString(e));
+//            }
+//        }
+//    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public void stopHotPoint() {
         try {
-            //热点的配置类
-            WifiConfiguration apConfig = new WifiConfiguration();
-            //配置热点的名称(可以在名字后面加点随机数什么的)
-            apConfig.SSID = apName;
-            apConfig.preSharedKey = apPassword;
-            //不设置密码
-            apConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-            //android 8.0开启wifi热点
-            if (Build.VERSION.SDK_INT >= 26) {
-                Method configMethod = mWifiManager.getClass().getMethod("setWifiApConfiguration", WifiConfiguration.class);
-                try {
-                    boolean isConfigured = (Boolean) configMethod.invoke(mWifiManager, apConfig);
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-
-                Method method = mWifiManager.getClass().getMethod("startSoftAp", WifiConfiguration.class);
-                //返回热点打开状态
-                return (Boolean) method.invoke(mWifiManager, apConfig);
+            Method method = mConnectivityManager.getClass().getDeclaredMethod("stopTethering", int.class);
+            if (method == null) {
             } else {
-                //通过反射调用设置热点
-                Method method = mWifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
-                //返回热点打开状态
-                return (Boolean) method.invoke(mWifiManager, apConfig, true);
+                method.invoke(mConnectivityManager, 0);
             }
         } catch (NoSuchMethodException e) {
-            e.getMessage();
-            return false;
+            e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            return false;
         } catch (InvocationTargetException e) {
             e.printStackTrace();
-            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
+//    public void wifiAP_close() {
+////        try {
+////            Method method2 = mWifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class);
+////            method2.invoke(mWifiManager, null, false);
+////        } catch (NoSuchMethodException e) {
+////            e.printStackTrace();
+////        } catch (IllegalArgumentException e) {
+////            e.printStackTrace();
+////        } catch (IllegalAccessException e) {
+////            e.printStackTrace();
+////        } catch (InvocationTargetException e) {
+////            e.printStackTrace();
+////        }
+//        stopHotPoint();
+//    }
+    public void wifiAP_open() {
+        if (getWifiApState() != WIFI_AP_STATE_ENABLED) {
+//            if (mWifiManager != null) {
+//                int wifiState = mWifiManager.getWifiState();
+//                boolean isWifiEnabled = ((wifiState == WifiManager.WIFI_STATE_ENABLED) || (wifiState == WifiManager.WIFI_STATE_ENABLING));
+//                if (isWifiEnabled)
+//                    mWifiManager.setWifiEnabled(false);
+//            }
+            //Android8.0及以上版本
+            if (Build.VERSION.SDK_INT >= 26) {
+//                if(connectivitymanager == null) {
+//                    Log.d(TAG,"connectivitymanager == null");
+//                    return;
+//                }
+//                connectivitymanager.startTethering(ConnectivityManager.TETHERING_WIFI, true, new ONStartTetheringCallback());
 
 
+                if(!shareManager.isSet()){
+                    setSSIDorPassword("DFSK","",ONLY_SSID,true);
+                    shareManager.setIsSet(true);
+                    Log.i(TAG, "wifiAP_open: 第一次开启热点 设置热点名称为DFSK");
+                }
+                mWifiManager.startSoftAp(getWifiAPconfigure());
+            }
+        }
+    }
+
+    public void wifiAP_close() {
+        //TODO 关闭热点
+        if (getWifiApState() != WIFI_AP_STATE_DISABLED) {
+            if (Build.VERSION.SDK_INT >= 26) {
+//                if(connectivitymanager == null) {
+//                    Log.d(TAG,"setwifiAPdisable  connectivitymanager == null");
+//                    return;
+//                }
+//                connectivitymanager.stopTethering(ConnectivityManager.TETHERING_WIFI);
+                mWifiManager.stopSoftAp();
+            }
+        }
+    }
 
 }

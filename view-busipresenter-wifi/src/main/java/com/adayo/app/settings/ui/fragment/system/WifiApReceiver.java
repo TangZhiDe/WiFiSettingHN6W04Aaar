@@ -67,12 +67,14 @@ public class WifiApReceiver extends BroadcastReceiver {
         if (instance.getSecurityType()  == 1) {/*无密码类型*/
             NetFragment.tv_ap_ssid.setText(context.getResources().getString(R.string.string15)+": " + instance.getWifiAPconfigure().SSID);
             NetFragment.tv_ap_pass.setText(context.getResources().getString(R.string.string20));
-            NetFragment.security_type.setIsRight(true);
-            NetFragment.security_type.flush(context);
+//            NetFragment.security_type.setIsRight(true);
+//            NetFragment.security_type.flush(context);
+            NetFragment.security_type.setCurrentTab(1);
             Log.d(TAG,"Checked(true)");
         } else  {/*加密类型*/
-            NetFragment.security_type.setIsRight(false);
-            NetFragment.security_type.flush(context);
+//            NetFragment.security_type.setIsRight(false);
+//            NetFragment.security_type.flush(context);
+            NetFragment.security_type.setCurrentTab(0);
             NetFragment.tv_ap_ssid.setText(context.getResources().getString(R.string.string15)+": " + instance.getWifiAPconfigure().SSID);
             NetFragment.tv_ap_pass.setText(context.getResources().getString(R.string.string17)+": " + instance.getWifiAPconfigure().preSharedKey);
             Log.d(TAG,"Checked(false)");
