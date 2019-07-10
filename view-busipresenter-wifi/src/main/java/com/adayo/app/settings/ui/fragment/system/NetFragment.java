@@ -24,11 +24,10 @@ import com.adayo.app.settings.R;
 import com.adayo.app.settings.adapter.WifiScanListAdapter;
 import com.adayo.app.settings.fota.app.FotaApplication;
 import com.adayo.app.settings.listener.WifiItemOnclickListener;
-import com.adayo.app.settings.ui.view.dialog.SwitchButton;
+import com.adayo.app.settings.ui.view.ItemMenuView;
 
 import com.adayo.app.settings.utils.WiFiUtil;
 import com.adayo.commonui.tablayout.SegmentTabLayout;
-import com.adayo.commonui.tablayout.listener.OnTabSelectListener;
 import com.adayo.systemserviceproxy.SystemServiceManager;
 
 import java.util.ArrayList;
@@ -42,12 +41,12 @@ import java.util.List;
  */
 public class NetFragment extends BaseFragment {
     public static List<ScanResult> results = new ArrayList<>();
-    public static ImageView wifi_power;
+    public static ItemMenuView wifi_power;
     public static ListView listview;
     public static String TAG = "NetFragment-v1.2";
     private WifiReceiver receiver;
     public static NetFragment netfragment = null;
-    public static ImageView ap_power;
+    public static ItemMenuView ap_power;
     public static WifiScanListAdapter adapter;
     public static final int WIFI_AP_STATE_DISABLING = 10;
     public static final int WIFI_AP_STATE_DISABLED = 11;
@@ -56,6 +55,7 @@ public class NetFragment extends BaseFragment {
     public static final String WIFI_AP_STATE_CHANGED_ACTION = "android.net.wifi.WIFI_AP_STATE_CHANGED";
     public static final String EXTRA_WIFI_AP_STATE = "wifi_state";
     private WifiApReceiver mReceiver;
+    public static boolean isSetting = false;
 
     public static SegmentTabLayout security_type;
 //    public static TextView tv_sec_nopass;
@@ -66,15 +66,15 @@ public class NetFragment extends BaseFragment {
     private Button btn_set_pass;
     private Button btn_set_ssid;
     public static LinearLayout wifi_list;
-    private TextView wifi_wifi;
     private TextView wifi_internet;
-    private TextView wifi_rd;
     private TextView wifi_internet1;
     public static   ImageView wifi_loading;
     private WiFiUtil instance;
     public static int currentwifiNightMode;
     private static ImageView wifi_refresh;
     private LinearLayout ap_part;
+    public static LinearLayout wifi_tip;
+    public static ImageView settting_loading1;
 
 
     //提供给外部的实例
@@ -138,35 +138,24 @@ public class NetFragment extends BaseFragment {
 //        security_type.flush(getMContext());
         btn_set_ssid.setBackground(getMContext().getDrawable(R.drawable.setting_button_bg_p));
         btn_set_pass.setBackground(getMContext().getDrawable(R.drawable.setting_button_bg_p));
-        security_type.setIndicatorColor(getResources().getColor(R.color.tl_indicator_color));
+//        security_type.setIndicatorColor(getResources().getColor(R.color.tl_indicator_color));
         security_type.setTextSelectColor(getResources().getColor(R.color.switch_select_color));
         security_type.setTextUnselectColor(getResources().getColor(R.color.switch_unselect_color));
-        security_type.setBarColor(getResources().getColor(R.color.tl_bar_color));
-        security_type.setBarStrokeColor(getResources().getColor(R.color.tl_stoke_color));
+//        security_type.setBarColor(getResources().getColor(R.color.tl_bar_color));
+//        security_type.setBarStrokeColor(getResources().getColor(R.color.tl_stoke_color));
+        security_type.setBarBackgroud(getResources().getDrawable(R.drawable.button_bg));
+        security_type.setIndicatorBackground(getResources().getDrawable(R.drawable.button_p));
         int i = instance.checkState();
         Log.d(TAG, "initWifiUI: wifi状态=="+i );
-        if(i == WifiManager.WIFI_STATE_DISABLED){
-            //关闭
-            wifi_power.setImageResource(R.drawable.wifi_setting_btn_close);
-            //TODO  wifi处于关闭状态时候，热点有可能是开启的
-            if (instance.getWifiApState() == WIFI_AP_STATE_ENABLED) {
-                ap_power.setImageResource(R.drawable.wifi_setting_btn_open);//开启状态
-            } else if (instance.getWifiApState() == WIFI_AP_STATE_DISABLED) {
-                ap_power.setImageResource(R.drawable.wifi_setting_btn_close);//关闭状态
-            }
-        }else if(i == WifiManager.WIFI_STATE_ENABLED){
-            //开启
-            wifi_power.setImageResource(R.drawable.wifi_setting_btn_open);
-            ap_power.setImageResource(R.drawable.wifi_setting_btn_close);//开启wifi就关闭热点
-        }
-
+        wifi_power.setSwitchBg();
+        ap_power.setSwitchBg();
     }
 
     public  void updateText(){
         Log.d(TAG, "updateText: " );
-        wifi_wifi.setText(getMContext().getResources().getString(R.string.string2));
         wifi_internet.setText(getMContext().getResources().getString(R.string.string1));
-        wifi_rd.setText(getMContext().getResources().getString(R.string.string12));
+        wifi_power.setText(getMContext().getResources().getString(R.string.string2));
+        ap_power.setText(getMContext().getResources().getString(R.string.string26));
         wifi_internet1.setText(getMContext().getResources().getString(R.string.string1));
         security_type.setTabData(getMContext().getResources().getStringArray(R.array.tab_layout));
 //        security_type.flush(getMContext());
@@ -180,9 +169,7 @@ public class NetFragment extends BaseFragment {
 //        wifi_refresh.setText(getMContext().getResources().getString(R.string.string28));
 //        wifi_refresh.setTextColor(getMContext().getResources().getColor(R.color.normal_color));
         tv_ap_ssid.setText(getMContext().getResources().getString(R.string.string15)+": " + instance.getWifiAPconfigure().SSID);
-        wifi_wifi.setTextColor(getMContext().getResources().getColor(R.color.normal_color));
         wifi_internet.setTextColor(getMContext().getResources().getColor(R.color.normal_color));
-        wifi_rd.setTextColor(getMContext().getResources().getColor(R.color.normal_color));
         wifi_internet1.setTextColor(getMContext().getResources().getColor(R.color.normal_color));
         btn_set_ssid.setTextColor(getMContext().getResources().getColor(R.color.again_color));
         btn_set_pass.setTextColor(getMContext().getResources().getColor(R.color.again_color));
@@ -198,14 +185,12 @@ public class NetFragment extends BaseFragment {
      */
     public  void startRotate() {
         Context appContext = FotaApplication.getAppContext();
-        Log.d(TAG, "startRotate" );
         Log.d(TAG, "startRotate:appContext=== "+appContext+"--wifi_loading=="+wifi_loading );
         if(appContext != null && wifi_loading != null && wifi_refresh != null){
                 Animation operatingAnim = AnimationUtils.loadAnimation(appContext, R.anim.wifi_version_image_rotate);
                 LinearInterpolator lin = new LinearInterpolator();
                 operatingAnim.setInterpolator(lin);
                 if (operatingAnim != null) {
-                    Log.d(TAG, "startRotate: 开始动画" );
                     wifi_refresh.setVisibility(View.GONE);
                     wifi_loading.setVisibility(View.VISIBLE);
                     wifi_loading.startAnimation(operatingAnim);
@@ -218,12 +203,36 @@ public class NetFragment extends BaseFragment {
      * 关闭动画
      */
     public void stopRotate() {
-        Log.d(TAG, "stopRotate wifi_loading==" +wifi_loading);
         if(wifi_loading != null && wifi_refresh != null){
             wifi_loading.clearAnimation();
             wifi_refresh.setVisibility(View.VISIBLE);
             wifi_loading.setVisibility(View.GONE);
-            Log.d(TAG, "stopRotate: 动画停止  application==" );
+        }
+
+    }
+
+    /**
+     * 开启动画
+     */
+    public static void startRotate1() {
+        Context appContext = FotaApplication.getAppContext();
+        if(appContext != null && settting_loading1 != null ){
+            Animation operatingAnim = AnimationUtils.loadAnimation(appContext, R.anim.wifi_version_image_rotate);
+            LinearInterpolator lin = new LinearInterpolator();
+            operatingAnim.setInterpolator(lin);
+            if (operatingAnim != null) {
+                settting_loading1.startAnimation(operatingAnim);
+            }
+        }
+
+    }
+
+    /**
+     * 关闭动画
+     */
+    public static void stopRotate1() {
+        if(settting_loading1 != null){
+            settting_loading1.clearAnimation();
         }
 
     }
@@ -232,9 +241,9 @@ public class NetFragment extends BaseFragment {
     @Override
     public void initView() {
         currentwifiNightMode = getResources().getConfiguration().uiMode;
-        ap_power = (ImageView) mContentView.findViewById(R.id.img_ap_power);
+        ap_power =  mContentView.findViewById(R.id.img_ap_power);
         wifi_refresh = mContentView.findViewById(R.id.wifi_refresh);
-        wifi_power = (ImageView) mContentView.findViewById(R.id.img_wifi_power);
+        wifi_power =  mContentView.findViewById(R.id.img_wifi_power);
         wifi_loading = (ImageView) mContentView.findViewById(R.id.wifi_loading_img);
         listview = (ListView) mContentView.findViewById(R.id.lsv_wifi);
         wifi_list = (LinearLayout) mContentView.findViewById(R.id.wifi_list);
@@ -244,11 +253,11 @@ public class NetFragment extends BaseFragment {
         tv_ap_pass = (TextView) mContentView.findViewById(R.id.tv_pass);
         btn_set_pass = (Button) mContentView.findViewById(R.id.img_buttton_SetPass);
         btn_set_ssid = (Button) mContentView.findViewById(R.id.img_buttton_Setssid);
-        wifi_wifi = (TextView) mContentView.findViewById(R.id.wifi_wifi);
         wifi_internet = (TextView) mContentView.findViewById(R.id.wifi_internet);
-        wifi_rd = (TextView) mContentView.findViewById(R.id.wifi_rd);
         wifi_internet1 = (TextView) mContentView.findViewById(R.id.wifi_internet1);
         ap_part = (LinearLayout) mContentView.findViewById(R.id.ap_part);
+        wifi_tip = mContentView.findViewById(R.id.wifi_tip);
+        settting_loading1 = mContentView.findViewById(R.id.wifi_loading);
         security_type.setTabData(getMContext().getResources().getStringArray(R.array.tab_layout));
         mSystemServiceManager.conectsystemService();
         try {
@@ -281,20 +290,20 @@ public class NetFragment extends BaseFragment {
         Log.d(TAG, "initWifiUI: wifi状态=="+i +"--getWifiApState=="+instance.getWifiApState());
         if(i == WifiManager.WIFI_STATE_DISABLED){
             //关闭
-            wifi_power.setImageResource(R.drawable.wifi_setting_btn_close);
+            wifi_power.setSwitchButtonState(false);
             wifi_list.setVisibility(View.GONE);
             //TODO  wifi处于关闭状态时候，热点有可能是开启的
             if (instance.getWifiApState() == WIFI_AP_STATE_ENABLED) {
-                ap_power.setImageResource(R.drawable.wifi_setting_btn_open);//开启状态
+                ap_power.setSwitchButtonState(true);
                 lin_wifiap_set.setVisibility(View.VISIBLE);
             } else if (instance.getWifiApState() == WIFI_AP_STATE_DISABLED) {
-                ap_power.setImageResource(R.drawable.wifi_setting_btn_close);//关闭状态
+                ap_power.setSwitchButtonState(false);
                 lin_wifiap_set.setVisibility(View.GONE);
             }
         }else if(i == WifiManager.WIFI_STATE_ENABLED){
             //开启
-            wifi_power.setImageResource(R.drawable.wifi_setting_btn_open);
-            ap_power.setImageResource(R.drawable.wifi_setting_btn_close);//开启wifi就关闭热点
+            wifi_power.setSwitchButtonState(true);
+            ap_power.setSwitchButtonState(false);//开启wifi就关闭热点
             lin_wifiap_set.setVisibility(View.GONE);
             instance.startScan();
         }
@@ -320,7 +329,7 @@ public class NetFragment extends BaseFragment {
     public void initapUI(){
         if (instance.getWifiApState() == WIFI_AP_STATE_ENABLED) {
             Log.d(TAG, "初始化热点UI开启");
-            ap_power.setImageResource(R.drawable.wifi_setting_btn_open);//开启状态
+            ap_power.setSwitchButtonState(true);//开启状态
             lin_wifiap_set.setVisibility(View.VISIBLE);
             if(instance.getSecurityType()  == 1){
                 security_type.setCurrentTab(1);
@@ -329,7 +338,7 @@ public class NetFragment extends BaseFragment {
             }
         } else if (instance.getWifiApState() == WIFI_AP_STATE_DISABLED) {
             Log.d(TAG, "初始化热点UI关闭");
-            ap_power.setImageResource(R.drawable.wifi_setting_btn_close);//关闭状态
+            ap_power.setSwitchButtonState(false);//关闭状态
             lin_wifiap_set.setVisibility(View.GONE);
         }
 
@@ -355,8 +364,35 @@ public class NetFragment extends BaseFragment {
     //初始化UI点击监听和搜索列表监听
     private void initlistenner() {
         WifiItemOnclickListener listener = new WifiItemOnclickListener(receiver,  getMContext());
-        wifi_power.setOnClickListener(listener);
-        ap_power.setOnClickListener(listener);
+        wifi_power.setOnItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: wifi_power");
+                if(instance != null){
+                    if (!instance.isWifiEnabled()) {
+                        instance.wifi_open();//开启wifi
+                    } else if (instance.isWifiEnabled()) {
+                        instance.wifi_close();//关闭wifi
+                    }
+                }
+            }
+        });
+        ap_power.setOnItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(instance != null){
+                    if (instance.getWifiApState() == WiFiUtil.WIFI_AP_STATE_DISABLED) {
+                        instance.wifiAP_open();//开启热点
+                        Log.d(TAG, "手动 热 点开启");
+
+                    } else if (instance.getWifiApState() == WiFiUtil.WIFI_AP_STATE_ENABLED) {
+                        instance.wifiAP_close();///关闭热点
+                        Log.d(TAG, "手动  热点关闭");
+                    }
+                }
+
+            }
+        });
         listview.setOnItemClickListener(listener);
         btn_set_pass.setOnClickListener(listener);
         btn_set_ssid.setOnClickListener(listener);

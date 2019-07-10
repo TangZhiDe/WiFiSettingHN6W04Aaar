@@ -11,8 +11,6 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.view.View;
 
-import com.adayo.app.settings.R;
-import com.adayo.app.settings.ui.view.dialog.Wifi_ConfirmDialog;
 import com.adayo.app.settings.utils.WiFiUtil;
 
 import java.util.List;
@@ -101,6 +99,9 @@ public class WifiReceiver extends BroadcastReceiver {
         //拿到NetworkInfo
         NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
         //判断连接上了哈
+        if(null != networkInfo){
+            NetworkInfo.DetailedState detailedState = networkInfo.getDetailedState();
+        }
         if (null != networkInfo && networkInfo.isConnected()) {
             //连接上了,就把wifi的信息传出去
             WifiInfo wifiInfo = intent.getParcelableExtra(WifiManager.EXTRA_WIFI_INFO);
@@ -138,7 +139,7 @@ public class WifiReceiver extends BroadcastReceiver {
             //连接成功：若是人为点击链接的，弹框消失，若自动链接，不提示弹框
             Log.d(TAG, "complted sucess"+WiFiUtil.getInstance(mcontex).getSSID());
             instance.paixu();
-            Wifi_ConfirmDialog.getInstance(mcontex,0,"").dismiss();
+//            Wifi_ConfirmDialog.getInstance(mcontex,0,"").dismiss();
             updata();
 
         } else if (state == SupplicantState.DISCONNECTED) {
@@ -210,7 +211,7 @@ public class WifiReceiver extends BroadcastReceiver {
             case WifiManager.WIFI_STATE_ENABLED:
                 //wifi已经打开..
                 Log.d(TAG, "handlerWifiState: 开始搜索" );
-                netFragment.wifi_power.setImageResource(R.drawable.wifi_setting_btn_open);
+                netFragment.wifi_power.setSwitchButtonState(true);
                 netFragment.wifi_list.setVisibility(View.VISIBLE);
                 instance.wifiAP_close();
 //                netFragment.handler.sendEmptyMessage(0x01);
@@ -223,7 +224,7 @@ public class WifiReceiver extends BroadcastReceiver {
             case WifiManager.WIFI_STATE_DISABLED:
                 //wifi关闭了..
                 netFragment.stopRotate();
-                netFragment.wifi_power.setImageResource(R.drawable.wifi_setting_btn_close);
+                netFragment.wifi_power.setSwitchButtonState(false);
                 netFragment.wifi_list.setVisibility(View.GONE);
                 break;
             case WifiManager.WIFI_STATE_DISABLING:

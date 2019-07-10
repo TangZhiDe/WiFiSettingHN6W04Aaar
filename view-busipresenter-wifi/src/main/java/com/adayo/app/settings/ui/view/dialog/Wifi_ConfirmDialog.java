@@ -4,7 +4,8 @@ package com.adayo.app.settings.ui.view.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,7 +32,7 @@ import com.adayo.app.settings.R;
  */
 public class Wifi_ConfirmDialog extends Dialog {
 
-    public static Wifi_ConfirmDialog dialog;
+    public  Wifi_ConfirmDialog dialog;
     private Context context;
     private ClickListenerInterface clickListenerInterface;
     public TextView alert_wifi_tip;
@@ -65,17 +66,17 @@ public class Wifi_ConfirmDialog extends Dialog {
      * @param context
      * @return
      */
-    public static Wifi_ConfirmDialog getInstance(Context context,int type,String input) {
-        if (dialog == null) {
-            synchronized (Wifi_ConfirmDialog.class) {
-                Log.d("TAG", "getInstance: 创建新的dialog");
-                dialog = new Wifi_ConfirmDialog(context,type,input);
-            }
-        }
-        return dialog;
-    }
+//    public static Wifi_ConfirmDialog getInstance(Context context,int type,String input) {
+//        if (dialog == null) {
+//            synchronized (Wifi_ConfirmDialog.class) {
+//                Log.d("TAG", "getInstance: 创建新的dialog");
+//                dialog = new Wifi_ConfirmDialog(context,type,input);
+//            }
+//        }
+//        return dialog;
+//    }
 
-    private Wifi_ConfirmDialog(Context context,int type,String input) {
+    public Wifi_ConfirmDialog(Context context,int type,String input) {
         super(context, R.style.dialog);
         this.context = context;
         this.type = type;
@@ -162,6 +163,18 @@ public class Wifi_ConfirmDialog extends Dialog {
 
 
     public  void init() {
+        Window window = this.getWindow();
+        window.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        window.requestFeature(Window.FEATURE_NO_TITLE);
+        // 全屏
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+        // 背景透明
+        window.setBackgroundDrawable(
+                new ColorDrawable(Color.TRANSPARENT));
+        lp.x = 360;
+        window.setAttributes(lp);
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.wifi_alertdialog_layout, null);
         setContentView(view);
@@ -194,15 +207,15 @@ public class Wifi_ConfirmDialog extends Dialog {
         initByType();
 
 
-        Window dialogWindow = getWindow();
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        lp.width = 640;
-        lp.height = 330;
-        //-250
-        lp.x = 360;
-//        lp.y = 50;
-        lp.gravity = Gravity.CENTER_VERTICAL | Gravity.START;
-        dialogWindow.setAttributes(lp);
+//        Window dialogWindow = getWindow();
+//        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+//        lp.width = 640;
+//        lp.height = 340;
+//        //-250
+//        lp.x = 360;
+////        lp.y = 50;
+//        lp.gravity = Gravity.CENTER_VERTICAL | Gravity.START;
+//        dialogWindow.setAttributes(lp);
     }
 
     private void initByType() {

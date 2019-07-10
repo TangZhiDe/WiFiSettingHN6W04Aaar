@@ -30,10 +30,15 @@ public class WifiApReceiver extends BroadcastReceiver {
             int cstate = intent.getIntExtra(EXTRA_WIFI_AP_STATE, -1);
             if (cstate == WIFI_AP_STATE_ENABLED) {
                 Log.d(TAG, "onReceive: 热点开启" );
+                if(NetFragment.isSetting){
+                    NetFragment.wifi_tip.setVisibility(View.GONE);
+                    NetFragment.stopRotate1();
+                    NetFragment.isSetting = false;
+                }
                 WiFiUtil.getInstance(context).wifi_close();
                 initAPstatus(context);
                 NetFragment.lin_wifiap_set.setVisibility(View.VISIBLE);
-                NetFragment.ap_power.setImageResource(R.drawable.wifi_setting_btn_open);
+                NetFragment.ap_power.setSwitchButtonState(true);
                 WifiConfiguration wifiAPconfigure = WiFiUtil.getInstance(context).getWifiAPconfigure();
                 if (WiFiUtil.getInstance(context).getSecurityType()  == 1) {/*无密码类型*/
                     NetFragment.tv_ap_pass.setText(context.getResources().getString(R.string.string20));
@@ -49,8 +54,12 @@ public class WifiApReceiver extends BroadcastReceiver {
 
             }else if (cstate == WIFI_AP_STATE_DISABLED){
                // Log.d(TAG,"广播，热点已关闭");
-                NetFragment.ap_power.setImageResource(R.drawable.wifi_setting_btn_close);
+                NetFragment.ap_power.setSwitchButtonState(false);
                 NetFragment.lin_wifiap_set.setVisibility(View.GONE);
+                if(NetFragment.isSetting){
+                    NetFragment.startRotate1();
+                    NetFragment.wifi_tip.setVisibility(View.VISIBLE);
+                }
             }else if (cstate == WIFI_AP_STATE_DISABLING){
              // Log.d(TAG,"热点正在关闭");
 

@@ -15,4 +15,5 @@
     <color name="tl_bar_color">#38404d</color>
     <color name="tl_stoke_color">#38404d</color>
     <color name="tl_indicator_color">#9ca2ac</color>
+    <color name="common_title_color">#6f7b8c</color>
 </resources>

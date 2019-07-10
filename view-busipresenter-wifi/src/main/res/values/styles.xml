@@ -37,6 +37,7 @@
         <!--<item name="switchButtonState">true</item>-->
     </style>
 
+
     <style name="ItemMenuViewStyleForSeekbar" parent="ItemMenuViewBaseStyle">
         <item name="showSeekBar">true</item>
         <item name="android:layout_width">54px</item>

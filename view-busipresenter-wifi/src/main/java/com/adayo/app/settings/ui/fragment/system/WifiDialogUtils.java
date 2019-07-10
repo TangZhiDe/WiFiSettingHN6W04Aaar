@@ -3,11 +3,7 @@ package com.adayo.app.settings.ui.fragment.system;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.adayo.app.base.BaseActivity;
 import com.adayo.app.settings.R;
@@ -45,8 +41,7 @@ public class WifiDialogUtils extends otherDialog {
 
     //若点击热点已经连接上,可以选择手动断开热点
     public void disconnect_wifi(String title, String message, String ssid, final int networkId, boolean show) {
-        Wifi_ConfirmDialog.dialog = null;
-        final Wifi_ConfirmDialog wifi_confirmDialog = Wifi_ConfirmDialog.getInstance(mContext,3,"");
+        final Wifi_ConfirmDialog wifi_confirmDialog = new Wifi_ConfirmDialog(mContext,3,"");
         wifi_confirmDialog.showDialog(NetFragment.currentwifiNightMode);
         wifi_confirmDialog.setCancelable(false);
         wifi_confirmDialog.alert_wifi_tip.setVisibility(View.GONE);
@@ -130,7 +125,7 @@ public class WifiDialogUtils extends otherDialog {
     }
 
     public void showDialog(final ScanResult scanresult, final WiFiUtil.Data type, boolean isError){
-        final Wifi_ConfirmDialog wifi_confirmDialog = Wifi_ConfirmDialog.getInstance(mContext,0,"");
+        final Wifi_ConfirmDialog wifi_confirmDialog = new Wifi_ConfirmDialog(mContext,0,"");
         wifi_confirmDialog.showDialog(NetFragment.currentwifiNightMode);
         wifi_confirmDialog.setCancelable(false);
         if(wifi_confirmDialog.alert_wifi_name != null){
@@ -171,7 +166,7 @@ public class WifiDialogUtils extends otherDialog {
     //修改热点账号弹框
     public void DialogSetSSID() {
 
-        final Wifi_ConfirmDialog wifi_confirmDialog = Wifi_ConfirmDialog.getInstance(mContext,1,mWiFiUtil.getWifiAPconfigure().SSID);
+        final Wifi_ConfirmDialog wifi_confirmDialog = new Wifi_ConfirmDialog(mContext,1,mWiFiUtil.getWifiAPconfigure().SSID);
         wifi_confirmDialog.showDialog(NetFragment.currentwifiNightMode);
         wifi_confirmDialog.setCancelable(false);
         wifi_confirmDialog.alert_wifi_tip.setVisibility(View.GONE);
@@ -182,6 +177,7 @@ public class WifiDialogUtils extends otherDialog {
                 if(ssid !=null && ssid != ""){
                     //配置账号
                     Log.d(TAG, "onClick: 修改账号 ssid==" +ssid);
+                    netfragment.isSetting = true;
                     mWiFiUtil.wifiAP_close();
                     mWiFiUtil.onlySetAPSSID(ssid,true);
                     wifi_confirmDialog.dismissDialog();
@@ -210,7 +206,7 @@ public class WifiDialogUtils extends otherDialog {
 
     //修改密码
     public void DialogSetPassWord(final boolean isUpdateType) {
-        final Wifi_ConfirmDialog wifi_confirmDialog = Wifi_ConfirmDialog.getInstance(mContext,2,mWiFiUtil.getWifiAPconfigure().preSharedKey);
+        final Wifi_ConfirmDialog wifi_confirmDialog = new Wifi_ConfirmDialog(mContext,2,mWiFiUtil.getWifiAPconfigure().preSharedKey);
         wifi_confirmDialog.showDialog(NetFragment.currentwifiNightMode);
         wifi_confirmDialog.setCancelable(false);
         wifi_confirmDialog.alert_wifi_tip.setVisibility(View.GONE);
@@ -224,6 +220,7 @@ public class WifiDialogUtils extends otherDialog {
                     Log.d(TAG, "onClick: 密码小于8位" );
                 } else {
                     Log.d(TAG, "onClick: 修改密码 pass==" +pass);
+                    netfragment.isSetting = true;
                     mWiFiUtil.wifiAP_close();
                     mWiFiUtil.onlySetAPPassword(pass,true);
                     wifi_confirmDialog.dismissDialog();

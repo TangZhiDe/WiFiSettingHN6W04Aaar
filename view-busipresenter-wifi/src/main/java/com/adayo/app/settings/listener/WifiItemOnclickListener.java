@@ -10,7 +10,6 @@ import com.adayo.app.settings.R;
 import com.adayo.app.settings.ui.fragment.system.NetFragment;
 import com.adayo.app.settings.ui.fragment.system.WifiDialogUtils;
 import com.adayo.app.settings.ui.fragment.system.WifiReceiver;
-import com.adayo.app.settings.ui.view.dialog.SwitchButton;
 import com.adayo.app.settings.utils.WiFiUtil;
 import com.adayo.commonui.tablayout.listener.OnTabSelectListener;
 
@@ -20,7 +19,7 @@ import com.adayo.commonui.tablayout.listener.OnTabSelectListener;
  */
 //wifi列表点击事件
 public class WifiItemOnclickListener implements View.OnClickListener, AdapterView.OnItemClickListener
-        , SwitchButton.HydropowerListener, SwitchButton.SoftFloorListener,OnTabSelectListener {
+        , OnTabSelectListener {
 
     private static String TAG = "WifiItemOnclickListener";
     private Context mContex;
@@ -59,11 +58,11 @@ public class WifiItemOnclickListener implements View.OnClickListener, AdapterVie
             return;
         }
 
+        Log.d(TAG, "onClick: "+v.getId());
 
         if (v.getId() == R.id.img_wifi_power) {/*wifi开关*/
-
+            Log.d(TAG, "run: 开启wifi");
             if (!mWiFiUtil.isWifiEnabled()) {
-                Log.d(TAG, "run: 开启wifi");
                 mWiFiUtil.wifi_open();//开启wifi
             } else if (mWiFiUtil.isWifiEnabled()) {
                 mWiFiUtil.wifi_close();//关闭wifi
@@ -102,6 +101,8 @@ public class WifiItemOnclickListener implements View.OnClickListener, AdapterVie
     private void SelectType(boolean isChecked) {
 
         if (!isChecked) {/*选择无密码*/
+
+            netfragment.isSetting = true;
             if (mWiFiUtil.getWifiApState() == WiFiUtil.WIFI_AP_STATE_ENABLED) {
                 mWiFiUtil.wifiAP_close();
             }
@@ -155,19 +156,6 @@ public class WifiItemOnclickListener implements View.OnClickListener, AdapterVie
     }
 
 
-    @Override
-    public void softFloor() {
-        //加密
-        Log.d(TAG, "softFloor: 加密");
-        SelectType(true);
-    }
-
-    @Override
-    public void hydropower() {
-        //免密
-        Log.d(TAG, "hydropower: 免密");
-        SelectType(false);
-    }
 
     @Override
     public void onTabSelect(int position) {

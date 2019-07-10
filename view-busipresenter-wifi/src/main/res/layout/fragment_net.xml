@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:myc="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,45 +9,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50px"
-        android:layout_marginTop="28px"
         android:orientation="vertical">
+<!--
+            style="@style/ItemMenuViewStyleForSwitch"-->
 
-        <LinearLayout
+        <com.adayo.app.settings.ui.view.ItemMenuView
+            android:id="@+id/img_wifi_power"
+            app:text="@string/string2"
+            myc:showSwitchButton="true"
+            android:layout_height="100px"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            app:textColor="@color/normal_color" />
 
-            <ImageView
-                android:id="@+id/img_wifi_power"
-                android:layout_width="84px"
-                android:layout_height="44px"
-
-                />
-
-            <TextView
-                android:id="@+id/wifi_wifi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60px"
-                android:text="@string/string2"
-                android:textColor="@color/normal_color"
-                android:textSize="26px" />
-        </LinearLayout>
-        <!--分割线-->
-        <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="2dp"-->
-        <!--android:background="@color/trans_black"-->
-
-        <!--/>-->
 
 
         <LinearLayout
             android:id="@+id/wifi_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="54px"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -104,51 +85,51 @@
 
 
     </LinearLayout>
-    <!--分割线-->
-    <!--<View-->
-    <!--android:layout_marginLeft="100px"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="2dp"-->
-    <!--android:background="@color/trans_black"-->
-    <!--/>-->
 
     <!--热点-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="500px"
-        android:layout_marginLeft="50px"
         android:id="@+id/ap_part"
-        android:layout_marginTop="56px"
         android:orientation="vertical">
         <!--“wifi热点”标题-->
+
+        <com.adayo.app.settings.ui.view.ItemMenuView
+            android:id="@+id/img_ap_power"
+            myc:showSwitchButton="true"
+            android:layout_height="100px"
+            android:layout_width="match_parent"
+            app:text="@string/string26"
+            app:textColor="@color/normal_color" />
+
+        <!--提示语-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
+            android:orientation="horizontal"
+            android:id="@+id/wifi_tip"
+            android:visibility="gone"
+            android:layout_marginTop="113px"
+            android:gravity="center"
+            android:layout_height="wrap_content">
             <ImageView
-                android:id="@+id/img_ap_power"
-                android:layout_width="84px"
-                android:layout_height="44px"
-
-                />
-
+                android:layout_width="32px"
+                android:src="@drawable/setting_loading"
+                android:id="@+id/wifi_loading"
+                android:layout_height="32px" />
             <TextView
-                android:id="@+id/wifi_rd"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60px"
-                android:text="@string/string26"
+                android:text="@string/string29"
                 android:textColor="@color/normal_color"
-                android:textSize="26px" />
-
+                android:textSize="26px"
+                android:layout_height="wrap_content" />
         </LinearLayout>
+
         <!--热点功能-->
         <LinearLayout
             android:id="@+id/lin_ap"
             android:layout_width="match_parent"
             android:layout_height="500px"
+            android:layout_marginLeft="54px"
             android:orientation="vertical"
             android:visibility="gone">
             <!--"网络"字样-->
@@ -160,39 +141,13 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/normal_color"
                 android:textSize="26px" />
-            <!--<LinearLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content">-->
 
-                <!--<RelativeLayout-->
-                    <!--android:layout_width="306px"-->
-                    <!--android:layout_height="54px">-->
-                    <!---->
-                    <!--<com.adayo.app.settings.ui.view.dialog.SwitchButton-->
-                        <!--android:id="@+id/switch_ap_security_select"-->
-                        <!--android:layout_width="306px"-->
-                        <!--android:layout_height="54px"-->
-                        <!--myc:bg_bitmap="@drawable/button_bg2"-->
-                        <!--myc:btn_bitmap="@drawable/setting_button_bg_n"-->
-                        <!--myc:textSize_ab="22px"-->
-                        <!--myc:textOn="@string/string13"-->
-                        <!--myc:textOff="@string/string14"-->
-                        <!--android:padding="10dp"-->
-                        <!--android:layout_centerHorizontal="true"/>-->
-
-
-                <!--</RelativeLayout>-->
-
-            <!--</LinearLayout>-->
-            <!--<include-->
-                <!--android:id="@+id/switch_ap_security_select"-->
-                <!--layout="@layout/segment_tab_layout"/>-->
             <com.adayo.commonui.tablayout.SegmentTabLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="@dimen/px306"
                 android:id="@+id/switch_ap_security_select"
-                android:layout_height="@dimen/px54"
+                android:layout_height="@dimen/px64"
                 app:tl_bar_color="@color/tl_bar_color"
                 app:tl_bar_stroke_color="@color/tl_stoke_color"
                 app:tl_bar_stroke_width="@dimen/px2"
@@ -204,7 +159,9 @@
                 app:tl_indicator_margin_top="@dimen/px2"
                 app:tl_tab_space_equal="true"
                 app:tl_textSelectColor="@color/switch_select_color"
-                app:tl_textUnselectColor="@color/switch_unselect_color" />
+                app:tl_textUnselectColor="@color/switch_unselect_color"
+                app:tl_bar_background="@drawable/button_bg"
+                app:tl_indicator_background="@drawable/button_p"/>
 
 
 
@@ -213,13 +170,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20px"
+                android:layout_marginTop="49px"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/img_buttton_Setssid"
-                    android:layout_width="134px"
-                    android:layout_height="58px"
+                    android:layout_width="130px"
+                    android:layout_height="54px"
                     android:textSize="24px"
                     android:textColor="@color/again_color"
                     android:background="@drawable/setting_button_bg_p"
@@ -242,13 +199,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20px"
+                android:layout_marginTop="46px"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/img_buttton_SetPass"
-                    android:layout_width="134px"
-                    android:layout_height="58px"
+                    android:layout_width="130px"
+                    android:layout_height="54px"
                     android:textSize="24px"
                     android:textColor="@color/again_color"
                     android:background="@drawable/setting_button_bg_p"

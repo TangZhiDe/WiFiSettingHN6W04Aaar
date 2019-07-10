@@ -8,10 +8,8 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.os.ResultReceiver;
 import android.util.Log;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -811,8 +809,6 @@ public class WiFiUtil {
 //                    return;
 //                }
 //                connectivitymanager.startTethering(ConnectivityManager.TETHERING_WIFI, true, new ONStartTetheringCallback());
-
-
                 if(!shareManager.isSet()){
                     setSSIDorPassword("DFSK","",ONLY_SSID,true);
                     shareManager.setIsSet(true);
