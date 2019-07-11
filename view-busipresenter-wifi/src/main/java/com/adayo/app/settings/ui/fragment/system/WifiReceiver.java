@@ -88,7 +88,6 @@ public class WifiReceiver extends BroadcastReceiver {
     }
 
 
-
     /**
      * 这个方法用于处理wifi的连接状态发生改变
      *
@@ -99,16 +98,24 @@ public class WifiReceiver extends BroadcastReceiver {
         //拿到NetworkInfo
         NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
         //判断连接上了哈
-        if(null != networkInfo){
+        if (null != networkInfo) {
             NetworkInfo.DetailedState detailedState = networkInfo.getDetailedState();
-        }
-        if (null != networkInfo && networkInfo.isConnected()) {
-            //连接上了,就把wifi的信息传出去
-            WifiInfo wifiInfo = intent.getParcelableExtra(WifiManager.EXTRA_WIFI_INFO);
-            if (wifiInfo != null) {
-                //把结果回传出去
+            int state = changeState(detailedState);
+            WiFiUtil.Connection_status = state;
+            Log.d(TAG, "handlerWifiConnectState: state==="+state);
+            if(state == 2){
+                instance.paixu();
             }
+            updata();
+
         }
+//        if (null != networkInfo && networkInfo.isConnected()) {
+//            //连接上了,就把wifi的信息传出去
+//            WifiInfo wifiInfo = intent.getParcelableExtra(WifiManager.EXTRA_WIFI_INFO);
+//            if (wifiInfo != null) {
+//                //把结果回传出去
+//            }
+//        }
 
     }
 
@@ -117,62 +124,65 @@ public class WifiReceiver extends BroadcastReceiver {
      * 这个方法用于通知连接状态变化
      */
     private void handlerWifiStateChange(Intent intent) {
-        SupplicantState state = wifimanager.getConnectionInfo().getSupplicantState();
-        if (state == SupplicantState.ASSOCIATED) {
-            //关联完成
-            WiFiUtil.Connection_status = 1;
-            updata();
-            Log.d(TAG, "onReceive: 关联AP完成");
-        } else if (state == SupplicantState.AUTHENTICATING) {
-            //正在验证
-            WiFiUtil.Connection_status = 1;
-            updata();
-            Log.d(TAG, "onReceive: 正在验证");
-        } else if (state == SupplicantState.ASSOCIATING) {
-            //正在关联....
-            WiFiUtil.Connection_status = 1;
-            updata();
-            Log.d(TAG, "onReceive: 正在关联AP");
-        } else if (state == SupplicantState.COMPLETED) {
-            Log.d(TAG, "onReceive: 已连接");
-            WiFiUtil.Connection_status = 2;
-            //连接成功：若是人为点击链接的，弹框消失，若自动链接，不提示弹框
-            Log.d(TAG, "complted sucess"+WiFiUtil.getInstance(mcontex).getSSID());
-            instance.paixu();
-//            Wifi_ConfirmDialog.getInstance(mcontex,0,"").dismiss();
-            updata();
-
-        } else if (state == SupplicantState.DISCONNECTED) {
-            Log.d(TAG, "onReceive: 已断开");
-            Log.d(TAG, "disconnected");
-            updata();
-        } else if (state == SupplicantState.DORMANT) {
-            //暂停活动
-        } else if (state == SupplicantState.FOUR_WAY_HANDSHAKE) {
-            //四路握手
-        } else if (state == SupplicantState.GROUP_HANDSHAKE) {
-            //"GROUP_HANDSHAKE
-        } else if (state == SupplicantState.INACTIVE) {
-            //休眠中
-        } else if (state == SupplicantState.INVALID) {
-            //无效
-        } else if (state == SupplicantState.SCANNING) {
-            //扫描中
-        } else if (state == SupplicantState.UNINITIALIZED) {
-            //未初始化
-        }
+        WifiInfo connectionInfo = wifimanager.getConnectionInfo();
+//        SupplicantState state = connectionInfo.getSupplicantState();
+//        if (state == SupplicantState.ASSOCIATED) {
+//            //关联完成
+//            WiFiUtil.Connection_status = 1;
+//            updata();
+//            Log.d(TAG, "onReceive: 关联AP完成");
+//        } else if (state == SupplicantState.AUTHENTICATING) {
+//            //正在验证
+//            WiFiUtil.Connection_status = 1;
+//            updata();
+//            Log.d(TAG, "onReceive: 正在验证");
+//        } else if (state == SupplicantState.ASSOCIATING) {
+//            //正在关联....
+//            WiFiUtil.Connection_status = 1;
+//            updata();
+//            Log.d(TAG, "onReceive: 正在关联AP");
+//        } else if (state == SupplicantState.COMPLETED) {
+//            Log.d(TAG, "onReceive: 已连接");
+//            WiFiUtil.Connection_status = 2;
+//            //连接成功：若是人为点击链接的，弹框消失，若自动链接，不提示弹框
+//            Log.d(TAG, "complted sucess" + WiFiUtil.getInstance(mcontex).getSSID());
+//            instance.paixu();
+////            Wifi_ConfirmDialog.getInstance(mcontex,0,"").dismiss();
+//            updata();
+//
+//        } else if (state == SupplicantState.DISCONNECTED) {
+//            Log.d(TAG, "onReceive: 已断开");
+//            Log.d(TAG, "disconnected");
+//            updata();
+//        } else if (state == SupplicantState.DORMANT) {
+//            //暂停活动
+//        } else if (state == SupplicantState.FOUR_WAY_HANDSHAKE) {
+//            //四路握手
+//        } else if (state == SupplicantState.GROUP_HANDSHAKE) {
+//            //"GROUP_HANDSHAKE
+//        } else if (state == SupplicantState.INACTIVE) {
+//            //休眠中
+//        } else if (state == SupplicantState.INVALID) {
+//            //无效
+//        } else if (state == SupplicantState.SCANNING) {
+//            //扫描中
+//        } else if (state == SupplicantState.UNINITIALIZED) {
+//            //未初始化
+//        }
 
         int error = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
         if (error == WifiManager.ERROR_AUTHENTICATING) {
             WiFiUtil.Connection_status = 0;
-            if(instance.scanListResult != null ){
-                Log.d(TAG, "handlerWifiStateChange: 认证失败 显示连接弹窗instance.scanListResult.SSID==="+instance.scanListResult.SSID );
+            if(instance.scanListResult != null){
                 instance.removeNet(instance.scanListResult.SSID);
-                dialoginstance.doCon(instance.scanListResult,true);
+                dialoginstance.doCon(instance.scanListResult, true);
+                instance.scanListResult = null;
+                Log.d(TAG, "handlerWifiStateChange: 显示密码错误弹窗");
             }
-            Log.d(TAG, "error authenticating");
+
         }
     }
+
     /**
      * 这个方法用于通知wifi扫描有结果
      */
@@ -210,7 +220,7 @@ public class WifiReceiver extends BroadcastReceiver {
         switch (wifiState) {
             case WifiManager.WIFI_STATE_ENABLED:
                 //wifi已经打开..
-                Log.d(TAG, "handlerWifiState: 开始搜索" );
+                Log.d(TAG, "handlerWifiState: 开始搜索");
                 netFragment.wifi_power.setSwitchButtonState(true);
                 netFragment.wifi_list.setVisibility(View.VISIBLE);
                 instance.wifiAP_close();
@@ -237,11 +247,61 @@ public class WifiReceiver extends BroadcastReceiver {
     }
 
 
-
     //适配器
     private void updata() {
         netFragment.adapter.notifyDataSetChanged();
-        Log.d(TAG, "updata: " );
+        Log.d(TAG, "updata: ");
+    }
+
+    private int changeState(NetworkInfo.DetailedState detailedState) {
+        int state = 0;
+        switch (detailedState) {
+            case IDLE:
+                //空闲
+                break;
+            case FAILED:
+                //失败
+                break;
+            case BLOCKED:
+                //已阻止
+                break;
+            case SCANNING:
+                //正在扫描
+                break;
+            case CONNECTED:
+                //已连接
+                state = 2;
+                break;
+            case SUSPENDED:
+                //已暂停
+                break;
+            case CONNECTING:
+                //连接中
+                state = 1;
+                break;
+            case DISCONNECTED:
+                //已断开
+                state = 0;
+                break;
+            case DISCONNECTING:
+                //正在断开连接
+                break;
+            case AUTHENTICATING:
+                //正在进行身份验证
+                state = 1;
+                break;
+            case OBTAINING_IPADDR:
+                //正在获取Ip地址
+                state = 1;
+                break;
+            case VERIFYING_POOR_LINK:
+                //暂时关闭（网络状况不佳）
+                break;
+            case CAPTIVE_PORTAL_CHECK:
+                //判断是否需要浏览器二次登录
+                break;
+        }
+        return state;
     }
 
 

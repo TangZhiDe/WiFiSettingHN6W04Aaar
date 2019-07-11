@@ -75,6 +75,7 @@ public class WifiScanListAdapter extends android.widget.BaseAdapter {
             info.tv_status.setVisibility(View.GONE);
         }
 
+
         updataUI();
         return convertView;
     }

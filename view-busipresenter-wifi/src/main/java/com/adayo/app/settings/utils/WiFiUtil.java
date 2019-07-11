@@ -238,6 +238,20 @@ public class WiFiUtil {
         }
     }
 
+    public ScanResult getResults(String ssid){
+        ScanResult result = null;
+        if (results != null) {
+            for (int i = 0; i < results.size(); i++) {
+                ScanResult scanResult = results.get(i);
+                if (("\"" + scanResult.SSID + "\"").equals(ssid)) {
+                    result = scanResult;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
     // 添加一个网络并连接
     public void addNetwork(WifiConfiguration wcg) {
         int wcgID = mWifiManager.addNetwork(wcg);
